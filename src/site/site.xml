@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/DECORATION/1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/DECORATION/1.0.0 http://maven.apache.org/xsd/decoration-1.0.0.xsd">
+
+<!--
+	<bannerLeft>
+		<name>Left Banner</name>
+		<src>images/logo.jpg</src>
+		<href>http://www.github.com</href>
+	</bannerLeft>
+-->
+	<bannerRight>
+		<name>Spark Compilable algorithms implementation</name>
+   </bannerRight>
+   
+   <version position="right"/>
+
+	<skin>
+		<groupId>org.apache.maven.skins</groupId>
+		<artifactId>maven-fluido-skin</artifactId>
+		<version>1.3.1</version>
+	</skin>
+	<custom>
+		<fluido-skin>
+			<sideBarEnabled>true</sideBarEnabled>
+			<googlePlusOne/>
+		</fluido-skin>
+	</custom>
+   
+	<body>
+		<links>
+			<item name="Daily Build" href="http://github.com"/>
+		</links>
+		<menu name="CMT file download process" inherit="top">
+			<item name="Overview" href="index.html"/>
+<!--             <item name="System Integration" href="systemintegration.html"/> -->
+            <item name="Developer Setup" href="developersetup.html"/>
+            <item name="Build and Deploy" href="buildanddeploy.html"/>
+            <item name="Physical Architecture" href="physicalarchitecture.html"/>
+            <item name="Logical Architecture" href="logicalarchitecture.html"/>
+<!--             <item name="Technical Reference" href="technicalreference.html"> -->
+<!--             	<item name="StagingFlowDiagram" href="technicalreference.html#Validation"/> -->
+<!--             </item> -->
+            <item name="User Guide" href="userguide.html"/>
+            <item name="Other docs" href="otherdocs.html"/>
+     	</menu>
+     	
+     	<menu ref="reports"/>
+	</body>
+</project>
