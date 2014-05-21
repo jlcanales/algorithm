@@ -1,6 +1,5 @@
 package org.aljuarismi.algorithm.sort;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import org.aljuarismi.algorithm.utils.FileUtils;

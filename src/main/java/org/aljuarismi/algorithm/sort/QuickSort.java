@@ -3,6 +3,7 @@ package org.aljuarismi.algorithm.sort;
 import java.util.ArrayList;
 import java.util.ListIterator;
 
+import org.aljuarismi.algorithm.sort.pivot.PivotRight;
 import org.apache.spark.api.java.function.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,21 +17,20 @@ public class QuickSort<T extends Comparable<T>> extends Function3<ArrayList<T>, 
 
 	private static Logger log = LoggerFactory.getLogger(QuickSort.class);
 	
-	/**
-	 * Selects a pivot Element for quickSort sorting implementation
-	 * The pivot element will be located between leftIndex and RightIndex
-	 * both inclusive.
-	 * @param leftIndex
-	 * @param rightIndex
-	 * @return Pivot Element Index
-	 * @throws IndexOutOfBoundsException if the index is out of range (( leftIndex < 0 || leftIndex >= size()) ||
-		   ( rightIndex < 0 || rightIndex >= size()) ||
-		   rightIndex < leftIndex) 
-	 */
-	public  int getPivot(int leftIndex, int rightIndex) throws IndexOutOfBoundsException{
-		return rightIndex;
+	
+	Function2<Integer, Integer, Integer> pivotSelector;
 		
+	
+	public QuickSort() {
+		super();
+		pivotSelector = new PivotRight();
 	}
+
+	
+	public QuickSort(Function2<Integer, Integer, Integer> aiPivotSelector) {
+		super();
+		pivotSelector = aiPivotSelector;
+	}	
 	
 	/**
 	 * Swap two elements in the list.
@@ -67,7 +67,7 @@ public class QuickSort<T extends Comparable<T>> extends Function3<ArrayList<T>, 
 		}
 				
 				
-		int  pivotIndex    = getPivot( leftIndex, rightIndex);
+		int  pivotIndex    = pivotSelector.call( leftIndex, rightIndex);
 		T	 pivotElement  = Array.get(pivotIndex);
 		Long compareNumber = new Long(rightIndex - leftIndex);
 
