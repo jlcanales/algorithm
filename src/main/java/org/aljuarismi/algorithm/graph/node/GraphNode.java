@@ -1,8 +1,12 @@
 package org.aljuarismi.algorithm.graph.node;
 
+import org.aljuarismi.algorithm.list.SortedList;
+import org.aljuarismi.algorithm.sort.QuickSort;
+import org.aljuarismi.algorithm.sort.pivot.PivotRandom;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,7 +38,11 @@ public class GraphNode <T extends Comparable<T>> implements Comparable<GraphNode
     /**
      * Default constructor
      */
-    public GraphNode(){}
+    public GraphNode(){
+        super();
+        nodeEdges = new ArrayList<GraphNode<T>>();
+        fuseNodes = new ArrayList<GraphNode<T>>();
+    }
 
     /**
      * Builds a new object given its nodeID and a list of all the related nodes
@@ -42,14 +50,25 @@ public class GraphNode <T extends Comparable<T>> implements Comparable<GraphNode
      * @param nodeID
      * @param nodeEdges
      */
-    public GraphNode(T nodeID, List<GraphNode<T>> nodeEdges ){}
+    public GraphNode(T nodeID, List<GraphNode<T>> nodeEdges ) throws Exception {
+        this.nodeID    = nodeID;
+        this.nodeEdges = nodeEdges;
+        QuickSort<GraphNode<T>> sort = new QuickSort<GraphNode<T>>();
+
+        sort.call(this.nodeEdges, null, null);
+
+    }
 
     /**
      * Add an edges list to the existing in this instance
-     * @param nodeEdges
+     * @param aiNodeEdges
      */
-    public void addEdges( List<GraphNode<T>> nodeEdges){
-        throw new UnsupportedOperationException();
+    public void addEdges( List<GraphNode<T>> aiNodeEdges) throws Exception {
+        QuickSort<GraphNode<T>> sort = new QuickSort<GraphNode<T>>();
+
+        sort.call(aiNodeEdges, null, null);
+
+        nodeEdges = SortedList.mergeLists(nodeEdges, aiNodeEdges);
     }
 
     /**
@@ -57,7 +76,7 @@ public class GraphNode <T extends Comparable<T>> implements Comparable<GraphNode
      * @param graphNode Associated Node
      */
     public void addEdge(GraphNode<T> graphNode){
-        throw new UnsupportedOperationException();
+        SortedList.insert(graphNode, nodeEdges,null,null);
     }
 
     /**
@@ -65,7 +84,7 @@ public class GraphNode <T extends Comparable<T>> implements Comparable<GraphNode
      * @param graphNode
      */
     public void addFuseNode(GraphNode<T> graphNode){
-        throw new UnsupportedOperationException();
+        SortedList.insert(graphNode, fuseNodes,null,null);
     }
 
 

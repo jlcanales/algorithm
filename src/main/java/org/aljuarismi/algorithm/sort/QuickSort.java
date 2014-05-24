@@ -1,14 +1,15 @@
 package org.aljuarismi.algorithm.sort;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ListIterator;
 
-import org.aljuarismi.algorithm.sort.pivot.PivotRight;
+import org.aljuarismi.algorithm.sort.pivot.PivotRandom;
 import org.apache.spark.api.java.function.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class QuickSort<T extends Comparable<T>> extends Function3<ArrayList<T>, Integer, Integer, Long> {
+public class QuickSort<T extends Comparable<T>> extends Function3<List<T>, Integer, Integer, Long> {
 
 	/**
 	 * 
@@ -23,7 +24,7 @@ public class QuickSort<T extends Comparable<T>> extends Function3<ArrayList<T>, 
 	
 	public QuickSort() {
 		super();
-		pivotSelector = new PivotRight();
+		pivotSelector = new PivotRandom();
 	}
 
 	
@@ -37,7 +38,7 @@ public class QuickSort<T extends Comparable<T>> extends Function3<ArrayList<T>, 
 	 * @param indexElementA First Element index
 	 * @param indexElementB Second Element index
 	 */
-	public void swapElements(ArrayList<T> Array, Integer indexElementA, Integer indexElementB){
+	public void swapElements(List<T> Array, Integer indexElementA, Integer indexElementB){
 	
 		if( indexElementA == indexElementB) return;
 		
@@ -50,7 +51,7 @@ public class QuickSort<T extends Comparable<T>> extends Function3<ArrayList<T>, 
 	
 	
 	@Override
-	public Long call(ArrayList<T> Array, Integer leftIndex, Integer rightIndex)
+	public Long call(List<T> Array, Integer leftIndex, Integer rightIndex)
 			throws Exception {
 		
 		if(leftIndex  == null) leftIndex  = new Integer(0);

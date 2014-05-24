@@ -40,7 +40,7 @@ public class QuickSortPivotRandomTest
 		ArrayList<Integer> sortArray = new ArrayList<Integer>();
 		sortArray.addAll(inputArray);
 
-		QuickSort<Integer> sort = new QuickSort<Integer>(new PivotRandom());
+		QuickSort<Integer> sort = new QuickSort<Integer>();
 		
 		log.info("Input Array Size: {};",sortArray.size());
 

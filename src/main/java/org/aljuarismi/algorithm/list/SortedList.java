@@ -1,12 +1,19 @@
 package org.aljuarismi.algorithm.list;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  * Created by javadev on 24/05/14.
  */
 public class SortedList {
+
+    private static Logger log = LoggerFactory.getLogger(SortedList.class);
 
     /**
      * Merge two sorted lists in one single list. Even Java Collections object has merge and sort method,
@@ -28,16 +35,16 @@ public class SortedList {
         int nElements = leftSize + rightSize;
 
         //Trick
-        // Including a last element in each array = 'infinitum', I avoid a IndexOutOfBoundsException
-        // When and array is completely processed and I don't need to include an
-        // if statement in the indexes in each iteration
+        // Including a last element in each array, I avoid a IndexOutOfBoundsException
 
-        leftList.add(Integer.MAX_VALUE);
-        rightList.add(Integer.MAX_VALUE);
+
+        leftList.add(leftList.get(leftSize - 1));
+        rightList.add(rightList.get(rightSize - 1));
 
         for( int k = 0; k < nElements; k++){
 
-            if (leftList.get(leftIndex).compareTo(rightList.get(rightIndex)) <= 0){
+            if ((rightIndex >= rightSize  || leftList.get(leftIndex).compareTo(rightList.get(rightIndex)) <= 0) &&
+                leftIndex <  leftSize){
                 mergedArray.add(leftList.get(leftIndex));
                 leftIndex++;
             }
@@ -59,9 +66,53 @@ public class SortedList {
      * @param <E> Element to be searched
      * @return Indexes list with the indexes where all found elements are located in the list
      */
-    public static <E extends Comparable<E>> List<Integer> search(E element, List<E> list){
+    public static <E extends Comparable<E>> List<Integer> search(E element, List<E> list, Integer leftIndex, Integer rightIndex){
 
-        return null;
+        List<Integer> elementsFound = new ArrayList<Integer>();
+        if(leftIndex  == null) leftIndex  = new Integer(0);
+        if(rightIndex == null) rightIndex = new Integer(list.size()-1);
+
+
+        //base case
+        if(rightIndex -  leftIndex == 0){
+            if( list.get(leftIndex).compareTo(element) == 0) elementsFound.add(leftIndex);
+            return elementsFound;
+        }
+
+        int midElementIndex = leftIndex + ((rightIndex-leftIndex)/2); //Integer division
+
+        switch((int)Math.signum(element.compareTo(list.get(midElementIndex)))){
+            case -1:
+                elementsFound = search(element, list, leftIndex, (midElementIndex -1));
+                break;
+
+            case 1:
+                elementsFound = search(element, list, (midElementIndex + 1), rightIndex);
+                break;
+
+            case 0: //must locate all the elements around the element found that are equal to element
+                elementsFound.add(midElementIndex);
+
+                int index = midElementIndex-1;
+                while( element.equals(list.get(index))){
+                    elementsFound.add(index);
+                    index--;
+                }
+
+                index = midElementIndex+1;
+                while( element.equals(list.get(index))){
+                    elementsFound.add(index);
+                    index++;
+                }
+
+                break;
+            default:
+                log.error("Binary Search comparation failure");
+                throw new RuntimeException("Binary Search comparation failure");
+
+        }
+
+        return elementsFound;
     }
 
     /**
@@ -72,7 +123,69 @@ public class SortedList {
      */
     public static <E extends Comparable<E>> int deDupe( List<E> list){
 
-        return 0;
+        int index = 0;
+        int locatedDupe = 0;
+        int lastIndex = list.size()-1;
+
+        if(lastIndex == 0) return 0;
+
+        ListIterator<E> iter = list.listIterator(1);
+
+        while (iter.hasNext()){
+            E prevElement = list.get(iter.previousIndex());
+            E element = iter.next();
+
+            if(element.compareTo(prevElement) == 0){
+                iter.remove();
+                locatedDupe++;
+            }
+        }
+        return locatedDupe;
     }
 
+    /**
+     * Inserts an element in a sorted list in the right position
+     * @param element Element to be inserted
+     * @param list Sorted list where the element will be inserted
+     * @param leftIndex sublist leftIndex. If null then first list element
+     * @param rightIndex sublist rightIndex. If null the last list element
+     * @param <E> Type of element
+     */
+    public static <E extends Comparable<E>> void insert(E element, List<E> list, Integer leftIndex, Integer rightIndex){
+
+        if(leftIndex  == null) leftIndex  = new Integer(0);
+        if(rightIndex == null) rightIndex = new Integer(list.size()-1);
+
+
+        //base case
+        if(rightIndex - leftIndex == 0){
+            if( element.compareTo(list.get(leftIndex)) <= 0){
+                list.add(leftIndex, element); //Insert to the left
+            }
+            else{
+                list.add(leftIndex, list.get(leftIndex)); //Duplicate element
+                list.set(leftIndex + 1, element); //Insert the element to the right
+            }
+        }
+
+        int midElementIndex = leftIndex + ((rightIndex-leftIndex)/2); //Integer division
+
+        switch((int)Math.signum(element.compareTo(list.get(midElementIndex)))){
+            case -1:
+                insert(element, list, leftIndex, (midElementIndex -1));
+                break;
+
+            case 1:
+                insert(element, list, (midElementIndex + 1), rightIndex);
+                break;
+
+            case 0: //Located an element equal to the element to be inserted
+                list.add(midElementIndex, element);
+                break;
+            default:
+                log.error("Binary Search comparation failure");
+                throw new RuntimeException("Binary Search comparation failure");
+
+        }
+    }
 }

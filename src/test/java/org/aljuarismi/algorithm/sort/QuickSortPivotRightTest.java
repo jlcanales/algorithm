@@ -2,6 +2,7 @@ package org.aljuarismi.algorithm.sort;
 
 import java.util.ArrayList;
 
+import org.aljuarismi.algorithm.sort.pivot.PivotRight;
 import org.aljuarismi.algorithm.utils.FileUtils;
 import org.junit.Assert;
 
@@ -42,7 +43,7 @@ public class QuickSortPivotRightTest
 		ArrayList<Integer> sortArray = new ArrayList<Integer>();
 		sortArray.addAll(inputArray);
 
-		QuickSort<Integer> sort = new QuickSort<Integer>();
+		QuickSort<Integer> sort = new QuickSort<Integer>(new PivotRight());
 		
 		log.info("Input Array Size: {};",sortArray.size());
 
@@ -73,7 +74,7 @@ public class QuickSortPivotRightTest
 		ArrayList<Integer> sortArray = new ArrayList<Integer>();
 		sortArray.addAll(inputArray);
 
-		QuickSort<Integer> sort = new QuickSort<Integer>();
+		QuickSort<Integer> sort = new QuickSort<Integer>(new PivotRight());
 		
 		log.info("Input Array Size: {};",sortArray.size());
 
@@ -104,7 +105,7 @@ public class QuickSortPivotRightTest
 		ArrayList<Integer> sortArray = new ArrayList<Integer>();
 		sortArray.addAll(inputArray);
 
-		QuickSort<Integer> sort = new QuickSort<Integer>();
+		QuickSort<Integer> sort = new QuickSort<Integer>(new PivotRight());
 		
 		log.info("Input Array Size: {};",sortArray.size());
 
@@ -134,7 +135,7 @@ public class QuickSortPivotRightTest
 		ArrayList<Integer> sortArray = new ArrayList<Integer>();
 		sortArray.addAll(inputArray);
 
-		QuickSort<Integer> sort = new QuickSort<Integer>();
+		QuickSort<Integer> sort = new QuickSort<Integer>(new PivotRight());
 		
 		log.info("Input Array Size: {};",sortArray.size());
 
