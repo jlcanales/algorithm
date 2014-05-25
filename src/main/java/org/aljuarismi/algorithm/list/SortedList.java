@@ -29,6 +29,8 @@ public class SortedList {
         int rightSize = rightList.size();
         int leftIndex = 0, rightIndex = 0;
 
+        if(leftSize  == 0) return new ArrayList<E>(rightList);
+        if(rightSize == 0) return new ArrayList<E>(leftList);
 
         ArrayList<E> mergedArray = new ArrayList<E>();
 
@@ -74,10 +76,14 @@ public class SortedList {
 
 
         //base case
-        if(rightIndex -  leftIndex == 0){
+        if(rightIndex - leftIndex<0){
+            return elementsFound;
+        }
+        else if(rightIndex - leftIndex == 0){
             if( list.get(leftIndex).compareTo(element) == 0) elementsFound.add(leftIndex);
             return elementsFound;
         }
+
 
         int midElementIndex = leftIndex + ((rightIndex-leftIndex)/2); //Integer division
 
@@ -94,13 +100,15 @@ public class SortedList {
                 elementsFound.add(midElementIndex);
 
                 int index = midElementIndex-1;
-                while( element.equals(list.get(index))){
+                while( index >= leftIndex &&
+                       element.equals(list.get(index))){
                     elementsFound.add(index);
                     index--;
                 }
 
                 index = midElementIndex+1;
-                while( element.equals(list.get(index))){
+                while( index <= rightIndex &&
+                       element.equals(list.get(index))){
                     elementsFound.add(index);
                     index++;
                 }
@@ -115,6 +123,87 @@ public class SortedList {
         return elementsFound;
     }
 
+    public static <E extends Comparable<E>> int remove(E element, List<E> list, Integer leftIndex, Integer rightIndex){
+
+        int elementsFound = 0;
+        if(leftIndex  == null) leftIndex  = new Integer(0);
+        if(rightIndex == null) rightIndex = new Integer(list.size()-1);
+
+
+        //base case
+        if(rightIndex - leftIndex<0){
+            return 0;
+        }
+        else if(rightIndex - leftIndex == 0){
+            if( list.get(leftIndex).compareTo(element) == 0) {
+                ListIterator iterator = list.listIterator(leftIndex);
+                iterator.next();
+                iterator.remove();
+            }
+            return 1;
+        }
+
+
+        int midElementIndex = leftIndex + ((rightIndex-leftIndex)/2); //Integer division
+
+        switch((int)Math.signum(element.compareTo(list.get(midElementIndex)))){
+            case -1:
+                elementsFound = remove(element, list, leftIndex, (midElementIndex -1));
+                break;
+
+            case 1:
+                elementsFound = remove(element, list, (midElementIndex + 1), rightIndex);
+                break;
+
+            case 0: //must locate all the elements around the element found that are equal to element
+
+                // get an iterator located in midElementIndex
+                ListIterator iterator = list.listIterator(midElementIndex);
+
+                //remove midElementIndex and next elements equals
+
+ //               int currentIndex = midElementIndex;
+ /*               E removedElement = (E)iterator.next();
+                while( currentIndex <= rightIndex &&
+                       removedElement.compareTo(element)==0){
+                    iterator.remove();
+                    removedElement = (E)iterator.next();
+                    currentIndex++;
+                    elementsFound++;
+                }
+*/
+/*                E removedElement;
+                do{
+                    removedElement = (E)iterator.next();
+                    iterator.remove();
+                    elementsFound++;
+                }while( iterator.hasNext() &&
+                        removedElement.compareTo(element)==0);
+
+*/
+                while( iterator.hasNext() &&
+                       list.get(iterator.nextIndex()).compareTo(element)==0){
+                    iterator.next();
+                    iterator.remove();
+                    elementsFound++;
+                }
+
+                while( iterator.hasPrevious() &&
+                       list.get(iterator.previousIndex()).compareTo(element)==0){
+                    iterator.previous();
+                    iterator.remove();
+                    elementsFound++;
+                }
+
+                break;
+            default:
+                log.error("Binary Search comparation failure");
+                throw new RuntimeException("Binary Search comparation failure");
+
+        }
+
+        return elementsFound;
+    }
     /**
      * This method clean duplicate elements in the sorted list.
      * @param list List to be cleaned
@@ -158,7 +247,11 @@ public class SortedList {
 
 
         //base case
-        if(rightIndex - leftIndex == 0){
+        if(rightIndex - leftIndex<0){
+            list.add(leftIndex, element);
+            return;
+        }
+        else if(rightIndex - leftIndex == 0){
             if( element.compareTo(list.get(leftIndex)) <= 0){
                 list.add(leftIndex, element); //Insert to the left
             }
@@ -166,6 +259,7 @@ public class SortedList {
                 list.add(leftIndex, list.get(leftIndex)); //Duplicate element
                 list.set(leftIndex + 1, element); //Insert the element to the right
             }
+            return;
         }
 
         int midElementIndex = leftIndex + ((rightIndex-leftIndex)/2); //Integer division

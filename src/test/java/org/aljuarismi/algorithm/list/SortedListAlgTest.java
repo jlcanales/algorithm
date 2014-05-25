@@ -286,4 +286,116 @@ public class SortedListAlgTest
         }
     }
 
+    @Test
+    public void removeCase1Test() throws Exception
+    {
+
+        log.info("=================================================");
+        log.info("...Remove Element in sorted lists. Sorted list with duplicates");
+        log.info("=================================================");
+
+
+        //Given
+        List<Integer> inputList = FileUtils.readFileAsIntArray("sortedlist/SearchListTest2.txt");
+        List<Integer> resultList = FileUtils.readFileAsIntArray("sortedlist/ResultRemoveTest1.txt");
+        int locatedDupe;
+
+
+        log.info("Input Array Size: {};",inputList.size());
+
+        //When
+        locatedDupe = SortedList.remove(16, inputList,null,null);
+
+        log.info("Duplicated located: {}", locatedDupe);
+        log.info("Result List: {}", inputList);
+
+        //Then
+        Assert.assertEquals(3,locatedDupe);
+        Assert.assertEquals(resultList, inputList);
+    }
+
+    @Test
+    public void removeCase2Test() throws Exception
+    {
+
+        log.info("=================================================");
+        log.info("...Remove Element in sorted lists. Remove first element");
+        log.info("=================================================");
+
+
+        //Given
+        List<Integer> inputList = FileUtils.readFileAsIntArray("sortedlist/SearchListTest2.txt");
+        List<Integer> resultList = FileUtils.readFileAsIntArray("sortedlist/ResultRemoveTest2.txt");
+        int locatedDupe;
+
+
+        log.info("Input Array Size: {};",inputList.size());
+
+        //When
+        locatedDupe = SortedList.remove(1, inputList,null,null);
+
+        log.info("Duplicated located: {}", locatedDupe);
+        log.info("Result List: {}", inputList);
+
+        //Then
+        Assert.assertEquals(1,locatedDupe);
+        Assert.assertEquals(resultList, inputList);
+    }
+
+    @Test
+    public void removeCase3Test() throws Exception
+    {
+
+        log.info("=================================================");
+        log.info("...Remove Element in sorted lists. Remove last element");
+        log.info("=================================================");
+
+
+        //Given
+        List<Integer> inputList = FileUtils.readFileAsIntArray("sortedlist/SearchListTest2.txt");
+        List<Integer> resultList = FileUtils.readFileAsIntArray("sortedlist/ResultRemoveTest3.txt");
+        int locatedDupe;
+
+
+        log.info("Input Array Size: {};",inputList.size());
+
+        //When
+        locatedDupe = SortedList.remove(20, inputList,null,null);
+
+        log.info("Duplicated located: {}", locatedDupe);
+        log.info("Result List: {}", inputList);
+
+        //Then
+        Assert.assertEquals(1,locatedDupe);
+        Assert.assertEquals(resultList, inputList);
+    }
+
+
+    @Test
+    public void removeCase4Test() throws Exception
+    {
+
+        log.info("=================================================");
+        log.info("...Remove Element in sorted lists. Remove last element with duplicates");
+        log.info("=================================================");
+
+
+        //Given
+        List<Integer> inputList = FileUtils.readFileAsIntArray("sortedlist/removeTest4.txt");
+        List<Integer> resultList = FileUtils.readFileAsIntArray("sortedlist/ResultRemoveTest4.txt");
+        int locatedDupe;
+
+
+        log.info("Input Array Size: {};",inputList.size());
+
+        //When
+        locatedDupe = SortedList.remove(20, inputList,null,null);
+
+        log.info("Duplicated located: {}", locatedDupe);
+        log.info("Result List: {}", inputList);
+
+        //Then
+        Assert.assertEquals(5,locatedDupe);
+        Assert.assertEquals(resultList, inputList);
+    }
 }

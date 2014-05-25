@@ -11,7 +11,10 @@
       </layout>
    </appender>
 
- 
+    <logger name="org.aljuarismi.algorithm.graph.node.Graph" additivity="false">
+        <level value="DEBUG" />
+        <appender-ref ref="Terminal" />
+    </logger>
 
     <root>
        <level value="INFO" />

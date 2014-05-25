@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import javax.xml.stream.FactoryConfigurationError;
@@ -14,6 +15,8 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import org.aljuarismi.algorithm.graph.node.GraphNode;
+import org.aljuarismi.algorithm.list.SortedList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -100,6 +103,40 @@ public class FileUtils {
         return resultArray;
     }
     
-    
+    public static List<GraphNode<Integer>> readFileAsGraphNode(String filePath) throws java.io.IOException {
+
+        InputStream  stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(filePath);
+
+        if(stream == null) throw new java.io.IOException("Error accessing file: " + filePath);
+
+        InputStreamReader  inputStream = new InputStreamReader( stream, Charset.defaultCharset());
+        BufferedReader 			reader = new BufferedReader( inputStream);
+        String line;
+
+        List<GraphNode<Integer>> graph = new ArrayList<GraphNode<Integer>>();
+        List<String> fileLines = new ArrayList<String>();
+        while ((line = reader.readLine()) != null) {
+            // process the line.
+            log.debug(line);
+            fileLines.add(line);
+            int nodeID = Integer.parseInt(line.split("\t")[0]);
+            GraphNode<Integer> node = new GraphNode<Integer>();
+            node.setNodeID(nodeID);
+            SortedList.insert(node,graph,null,null);
+        }
+        reader.close();
+
+        // Add Node References
+        for(int nodeIndex = 0; nodeIndex < graph.size(); nodeIndex++){
+            String[] nodeLine = fileLines.get(nodeIndex).split("\t");
+
+            GraphNode<Integer> node = graph.get(Integer.parseInt(nodeLine[0])-1);
+            for(int edgesPoints = 1; edgesPoints < nodeLine.length; edgesPoints++){
+                node.addEdge(graph.get(Integer.parseInt(nodeLine[edgesPoints])-1));
+            }
+        }
+
+        return graph;
+    }
     
 }
