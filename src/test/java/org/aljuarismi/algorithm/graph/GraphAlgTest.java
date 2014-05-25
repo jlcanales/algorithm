@@ -77,7 +77,7 @@ public class GraphAlgTest
 
 
         //When
-        Graph.fuseNodes(inputGraph.get(2), inputGraph.get(0));
+        Graph.fuseNodes(inputGraph.get(7), inputGraph.get(6));
 
 
         //Then
@@ -105,7 +105,7 @@ public class GraphAlgTest
 		
 		
 		//Given
-        List<GraphNode<Integer>> inputGraph = FileUtils.readFileAsGraphNode("graph/double8.txt");
+        List<GraphNode<Integer>> inputGraph = FileUtils.readFileAsGraphNode("graph/kargerMinCut.txt");
         log.info("Input graph Size: {};", inputGraph.size());
 
 		//When
@@ -126,15 +126,15 @@ public class GraphAlgTest
 
 
         //Given
-        List<GraphNode<Integer>> inputGraph = FileUtils.readFileAsGraphNode("graph/double8.txt");
-        log.info("Input graph Size: {};", inputGraph.size());
 
         Integer minCuts = Integer.MAX_VALUE;
         //When
-
         for( int i = 0; i < 50; i++) {
-            List<GraphNode<Integer>> auxGraph = new ArrayList<GraphNode<Integer>>(inputGraph);
-            Integer mincutResult = Graph.minCuts(auxGraph);
+            log.info("Starting Iteration: {};", i);
+            List<GraphNode<Integer>> inputGraph = FileUtils.readFileAsGraphNode("graph/kargerMinCut.txt");
+            log.info("Input graph Size: {};", inputGraph.size());
+
+            Integer mincutResult = Graph.minCuts(inputGraph);
             if( mincutResult < minCuts){ minCuts = mincutResult;}
             log.info("Number of Edges: {}", mincutResult);
         }

@@ -94,19 +94,35 @@ public class Graph {
 
         Random rndGenerator = new Random();
         int nodeIndex = rndGenerator.nextInt(nodeList.size());
+        int secNodeIndex;
         GraphNode<T> firstNode = nodeList.get(nodeIndex);
 
         if(firstNode.getNodeEdges().size()>1) {
             Random edgeRndGenerator = new Random();
-            nodeIndex = edgeRndGenerator.nextInt(firstNode.getNodeEdges().size());
+            secNodeIndex = edgeRndGenerator.nextInt(firstNode.getNodeEdges().size());
         }
         else{
-            nodeIndex = 0;
+            secNodeIndex = 0;
         }
-        GraphNode<T> secondNode = firstNode.getNodeEdges().get(nodeIndex);
+
+        GraphNode<T> secondNode = firstNode.getNodeEdges().get(secNodeIndex);
 
         resultArray.add(firstNode);
         resultArray.add(secondNode);
+
+        if(log.isDebugEnabled()){
+            StringBuffer sBuffer= new StringBuffer();
+
+            sBuffer.append("Selected Node Index: ")
+                    .append(nodeIndex)
+                    .append(" nodeId: ")
+                    .append(firstNode.getNodeID())
+                    .append("; Second Node Index: ")
+                    .append(secNodeIndex)
+                    .append(" nodeId: ")
+                    .append(secondNode.getNodeID());
+            log.debug(sBuffer.toString());
+        }
 
         return (List<GraphNode<T>>) resultArray;
     }
@@ -124,19 +140,14 @@ public class Graph {
 
         // Step 2: add nodeB edges to nodeA
         List<GraphNode<T>> nodeBEdges = new ArrayList<GraphNode<T>>(nodeB.getNodeEdges()); //Make a list copy to not modify original list.
-
-        // Step 2.1: Clean references to nodeA in nodeB edges. This avoid self reference edges when the
-        //           nodes will be merged
-        log.debug("Cleaning node {} references in node {} edges", nodeA.getNodeID(), nodeB.getNodeID());
-        SortedList.remove(nodeA, nodeBEdges, null, null);
-
-        // Step 2.2: Clean references to nodeB in nodeA edges. This avoid self reference edges when the
-        //           nodes will be merged
         List<GraphNode<T>> nodeAEdges = new ArrayList<GraphNode<T>>(nodeA.getNodeEdges());
-        log.debug("Cleaning node {} references in node {} edges", nodeB.getNodeID(), nodeA.getNodeID());
-        SortedList.remove(nodeB, nodeAEdges, null, null);
 
         List<GraphNode<T>> mergedEdges = SortedList.mergeLists(nodeAEdges, nodeBEdges);
+
+        //Step 2.1 Remove loops
+        SortedList.remove(nodeA, mergedEdges, null, null);
+        SortedList.remove(nodeB, mergedEdges, null, null);
+
         nodeA.setNodeEdges(mergedEdges);
 
         // Step 3: Reordering associations in all the nodeB edges elements
@@ -147,12 +158,33 @@ public class Graph {
             // Step 3.2 substituted by nodeA
             for(Integer nodeBRefIndex : nodeBRefs){
                 bEdgeNode.getNodeEdges().set(nodeBRefIndex.intValue(), nodeA);
-                //elements may  be unsorted after this operation
-                // a sort operation is needed.
-                QuickSort<GraphNode<T>> sort = new QuickSort<GraphNode<T>>();
-
-                sort.call(bEdgeNode.getNodeEdges(), null, null);
             }
+            //elements may  be unsorted after this operation
+            // a sort operation is needed.
+            QuickSort<GraphNode<T>> sort = new QuickSort<GraphNode<T>>();
+            sort.call(bEdgeNode.getNodeEdges(), null, null);
+
+            // debug TODO
+            // Detección de errores por que no se hayan modificado correctamente los valores
+
+            List<Integer> badReferences = SortedList.search(nodeB, bEdgeNode.getNodeEdges(), null, null);
+            if(badReferences.size() != 0){
+                log.error("Detectado elemento no modificado: {}", badReferences);
+                StringBuffer sBuffer= new StringBuffer();
+
+                for(GraphNode<T> node: bEdgeNode.getNodeEdges()){
+                    sBuffer.append(node.getNodeID()).append("# ");
+                    for(GraphNode<T> edge: node.getNodeEdges()){
+                        sBuffer.append(edge.getNodeID()).append("; ");
+                    }
+                    sBuffer.append("\n");
+                }
+                log.debug(sBuffer.toString());
+                throw new RuntimeException("Detectado elemento no modificado");
+            }
+
+            //DEBUG TODO
+
         }
 
         //Finished

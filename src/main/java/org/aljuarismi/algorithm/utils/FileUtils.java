@@ -136,6 +136,23 @@ public class FileUtils {
             }
         }
 
+        if(log.isDebugEnabled()){
+            //volcado lista de nodos
+            StringBuffer sBuffer= new StringBuffer();
+
+            sBuffer.append("Readed Graph:\n");
+            for(GraphNode<Integer> node: graph){
+                sBuffer.append(node.getNodeID()).append("# ");
+                for(GraphNode<Integer> edge: node.getNodeEdges()){
+                    sBuffer.append(edge.getNodeID()).append("; ");
+                }
+                sBuffer.append("\n");
+            }
+            sBuffer.append("GRAPH END\n");
+            log.debug(sBuffer.toString());
+
+        }
+
         return graph;
     }
     

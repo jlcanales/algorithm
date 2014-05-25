@@ -226,7 +226,7 @@ public class SortedListAlgTest
         log.info("Result Indexes Array: {}", result);
 
         //Then
-        Assert.assertEquals(1,result.size());
+        Assert.assertEquals(5,result.size());
         Assert.assertEquals(1, inputList.get(result.get(0).intValue()).intValue()); // result is a indexes list (not a element list)
 
     }
@@ -253,10 +253,37 @@ public class SortedListAlgTest
         log.info("Result Indexes Array: {}", result);
 
         //Then
-        Assert.assertEquals(1,result.size());
+        Assert.assertEquals(3,result.size());
         Assert.assertEquals(20, inputList.get(result.get(0).intValue()).intValue()); // result is a indexes list (not a element list)
 
     }
+
+    @Test
+    public void searchCase5Test() throws Exception
+    {
+
+        log.info("=================================================");
+        log.info("...Search in sorted lists. search non existing element");
+        log.info("=================================================");
+
+
+        //Given
+        List<Integer> inputList = FileUtils.readFileAsIntArray("sortedlist/SearchListTest1.txt");
+        List<Integer> result;
+
+
+        log.info("Input Array Size: {};",inputList.size());
+
+        //When
+        result = SortedList.search(50,inputList,null,null);
+
+        log.info("Result Indexes Array: {}", result);
+
+        //Then
+        Assert.assertEquals(0,result.size());
+
+    }
+
     @Test
     public void deDupeCase1Test() throws Exception
     {
