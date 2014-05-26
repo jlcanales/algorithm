@@ -30,7 +30,20 @@ public class Graph {
 
         //more than two nodes
         // Step 1: Get an edge randomly
-        List<GraphNode<T>> edgeNodes = getRandomEdge( nodeList);
+        //List<GraphNode<T>> edgeNodes = getRandomEdge( nodeList);
+        ArrayList<GraphNode<T>> edgeNodes = new ArrayList<GraphNode<T>>();
+
+        Random rndGenerator = new Random();
+        int nodeIndex = rndGenerator.nextInt(nodeList.size());
+        int secNodeIndex;
+        GraphNode<T> firstNode = nodeList.get(nodeIndex);
+
+        secNodeIndex=firstNode.getNodeEdges().size()>1?rndGenerator.nextInt(firstNode.getNodeEdges().size()):0;
+
+        edgeNodes.add(firstNode);
+        edgeNodes.add(firstNode.getNodeEdges().get(secNodeIndex));
+        // End Step 1.
+
 
         // Step 2 Fuse Nodes:
         log.debug("Merging nodes {} - {}",edgeNodes.get(0).getNodeID(), edgeNodes.get(1).getNodeID() );
@@ -83,51 +96,6 @@ public class Graph {
     }
 
     /**
-     * Gets two nodes associated by an edge in a randomized way.
-     * @param nodeList List of GraphNodes that store all the elements of a Graph
-     * @param <T> Element type of GraphNode
-     * @return Two elements arrays with the two nodes associated to the selected edge
-     */
-    public static <T extends Comparable<T>> List<GraphNode<T>> getRandomEdge(List<GraphNode<T>> nodeList){
-
-        ArrayList<GraphNode<T>> resultArray = new ArrayList<GraphNode<T>>();
-
-        Random rndGenerator = new Random();
-        int nodeIndex = rndGenerator.nextInt(nodeList.size());
-        int secNodeIndex;
-        GraphNode<T> firstNode = nodeList.get(nodeIndex);
-
-        if(firstNode.getNodeEdges().size()>1) {
-            Random edgeRndGenerator = new Random();
-            secNodeIndex = edgeRndGenerator.nextInt(firstNode.getNodeEdges().size());
-        }
-        else{
-            secNodeIndex = 0;
-        }
-
-        GraphNode<T> secondNode = firstNode.getNodeEdges().get(secNodeIndex);
-
-        resultArray.add(firstNode);
-        resultArray.add(secondNode);
-
-        if(log.isDebugEnabled()){
-            StringBuffer sBuffer= new StringBuffer();
-
-            sBuffer.append("Selected Node Index: ")
-                    .append(nodeIndex)
-                    .append(" nodeId: ")
-                    .append(firstNode.getNodeID())
-                    .append("; Second Node Index: ")
-                    .append(secNodeIndex)
-                    .append(" nodeId: ")
-                    .append(secondNode.getNodeID());
-            log.debug(sBuffer.toString());
-        }
-
-        return (List<GraphNode<T>>) resultArray;
-    }
-
-    /**
      * Merge two nodes and store the result node in the first parameter
      * @param nodeA First node that will be the result node of node fusion.
      * @param nodeB Second node.
@@ -163,27 +131,6 @@ public class Graph {
             // a sort operation is needed.
             QuickSort<GraphNode<T>> sort = new QuickSort<GraphNode<T>>();
             sort.call(bEdgeNode.getNodeEdges(), null, null);
-
-            // debug TODO
-            // Detección de errores por que no se hayan modificado correctamente los valores
-
-            List<Integer> badReferences = SortedList.search(nodeB, bEdgeNode.getNodeEdges(), null, null);
-            if(badReferences.size() != 0){
-                log.error("Detectado elemento no modificado: {}", badReferences);
-                StringBuffer sBuffer= new StringBuffer();
-
-                for(GraphNode<T> node: bEdgeNode.getNodeEdges()){
-                    sBuffer.append(node.getNodeID()).append("# ");
-                    for(GraphNode<T> edge: node.getNodeEdges()){
-                        sBuffer.append(edge.getNodeID()).append("; ");
-                    }
-                    sBuffer.append("\n");
-                }
-                log.debug(sBuffer.toString());
-                throw new RuntimeException("Detectado elemento no modificado");
-            }
-
-            //DEBUG TODO
 
         }
 

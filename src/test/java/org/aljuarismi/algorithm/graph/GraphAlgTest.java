@@ -74,11 +74,8 @@ public class GraphAlgTest
         List<GraphNode<Integer>> inputGraph = FileUtils.readFileAsGraphNode("graph/double8.txt");
         log.info("Input graph Size: {};", inputGraph.size());
 
-
-
         //When
         Graph.fuseNodes(inputGraph.get(7), inputGraph.get(6));
-
 
         //Then
         StringBuffer sBuffer= new StringBuffer();
@@ -129,8 +126,10 @@ public class GraphAlgTest
 
         Integer minCuts = Integer.MAX_VALUE;
         //When
-        for( int i = 0; i < 50; i++) {
+        for( int i = 0; i < 20; i++) {
             log.info("Starting Iteration: {};", i);
+            //Graph has to be created from the scratch.
+            //Array copy only copy references.
             List<GraphNode<Integer>> inputGraph = FileUtils.readFileAsGraphNode("graph/kargerMinCut.txt");
             log.info("Input graph Size: {};", inputGraph.size());
 
