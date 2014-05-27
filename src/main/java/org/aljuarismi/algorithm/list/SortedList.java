@@ -162,25 +162,6 @@ public class SortedList {
 
                 //remove midElementIndex and next elements equals
 
- //               int currentIndex = midElementIndex;
- /*               E removedElement = (E)iterator.next();
-                while( currentIndex <= rightIndex &&
-                       removedElement.compareTo(element)==0){
-                    iterator.remove();
-                    removedElement = (E)iterator.next();
-                    currentIndex++;
-                    elementsFound++;
-                }
-*/
-/*                E removedElement;
-                do{
-                    removedElement = (E)iterator.next();
-                    iterator.remove();
-                    elementsFound++;
-                }while( iterator.hasNext() &&
-                        removedElement.compareTo(element)==0);
-
-*/
                 while( iterator.hasNext() &&
                        list.get(iterator.nextIndex()).compareTo(element)==0){
                     iterator.next();

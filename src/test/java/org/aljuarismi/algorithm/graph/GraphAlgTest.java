@@ -126,16 +126,23 @@ public class GraphAlgTest
 
         Integer minCuts = Integer.MAX_VALUE;
         //When
-        for( int i = 0; i < 20; i++) {
+        for( int i = 0; i < 100; i++) {
             log.info("Starting Iteration: {};", i);
             //Graph has to be created from the scratch.
             //Array copy only copy references.
             List<GraphNode<Integer>> inputGraph = FileUtils.readFileAsGraphNode("graph/kargerMinCut.txt");
             log.info("Input graph Size: {};", inputGraph.size());
 
+            long startTime = System.currentTimeMillis();
+
             Integer mincutResult = Graph.minCuts(inputGraph);
+
+            long stopTime = System.currentTimeMillis();
+            long elapsedTime = stopTime - startTime;
+
             if( mincutResult < minCuts){ minCuts = mincutResult;}
             log.info("Number of Edges: {}", mincutResult);
+            log.info("Running Time MinCuts: {} ms", elapsedTime);
         }
         //Then
         log.info("Final Result: {}", minCuts);

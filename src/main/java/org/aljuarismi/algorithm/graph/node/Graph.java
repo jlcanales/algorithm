@@ -47,7 +47,9 @@ public class Graph {
 
         // Step 2 Fuse Nodes:
         log.debug("Merging nodes {} - {}",edgeNodes.get(0).getNodeID(), edgeNodes.get(1).getNodeID() );
+
         fuseNodes(edgeNodes.get(0), edgeNodes.get(1));
+
 
         // Step 3: remove second node from the list
         List<Integer> nodeBIndex = SortedList.search(edgeNodes.get(1), nodeList, null, null);
@@ -103,6 +105,8 @@ public class Graph {
      */
     public static <T extends Comparable<T>> void fuseNodes(GraphNode<T> nodeA, GraphNode<T>nodeB) throws Exception {
 
+         //long startTime = System.currentTimeMillis();
+
         // Step 1: add nodeB to the fuseNodes list in nodeA
         nodeA.addFuseNode(nodeB);
 
@@ -110,27 +114,28 @@ public class Graph {
         List<GraphNode<T>> nodeBEdges = new ArrayList<GraphNode<T>>(nodeB.getNodeEdges()); //Make a list copy to not modify original list.
         List<GraphNode<T>> nodeAEdges = new ArrayList<GraphNode<T>>(nodeA.getNodeEdges());
 
-        List<GraphNode<T>> mergedEdges = SortedList.mergeLists(nodeAEdges, nodeBEdges);
+        List<GraphNode<T>> mergedEdges = SortedList.mergeLists(nodeAEdges, nodeBEdges); // O(n + m)
 
         //Step 2.1 Remove loops
-        SortedList.remove(nodeA, mergedEdges, null, null);
-        SortedList.remove(nodeB, mergedEdges, null, null);
+        SortedList.remove(nodeA, mergedEdges, null, null); //O(log( n))
+        SortedList.remove(nodeB, mergedEdges, null, null); //O(log( n))
 
         nodeA.setNodeEdges(mergedEdges);
+
 
         // Step 3: Reordering associations in all the nodeB edges elements
         for( GraphNode<T> bEdgeNode: nodeBEdges){
 
             // Step 3.1 get indexes of NodeB references y this node
             List<Integer> nodeBRefs = SortedList.search(nodeB, bEdgeNode.getNodeEdges(), null, null);
+
+
             // Step 3.2 substituted by nodeA
-            for(Integer nodeBRefIndex : nodeBRefs){
-                bEdgeNode.getNodeEdges().set(nodeBRefIndex.intValue(), nodeA);
+            SortedList.remove(nodeB,bEdgeNode.getNodeEdges(),null,null);//O(log(n))
+            for( int i = 0; i<nodeBRefs.size();i++){
+                SortedList.insert(nodeA,bEdgeNode.getNodeEdges(),null,null);//O(log(n))
             }
-            //elements may  be unsorted after this operation
-            // a sort operation is needed.
-            QuickSort<GraphNode<T>> sort = new QuickSort<GraphNode<T>>();
-            sort.call(bEdgeNode.getNodeEdges(), null, null);
+
 
         }
 
