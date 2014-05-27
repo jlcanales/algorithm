@@ -126,7 +126,7 @@ public class GraphAlgTest
 
         Integer minCuts = Integer.MAX_VALUE;
         //When
-        for( int i = 0; i < 100; i++) {
+        for( int i = 0; i < 200; i++) {
             log.info("Starting Iteration: {};", i);
             //Graph has to be created from the scratch.
             //Array copy only copy references.

@@ -30,7 +30,6 @@ public class Graph {
 
         //more than two nodes
         // Step 1: Get an edge randomly
-        //List<GraphNode<T>> edgeNodes = getRandomEdge( nodeList);
         ArrayList<GraphNode<T>> edgeNodes = new ArrayList<GraphNode<T>>();
 
         Random rndGenerator = new Random();
@@ -52,30 +51,7 @@ public class Graph {
 
 
         // Step 3: remove second node from the list
-        List<Integer> nodeBIndex = SortedList.search(edgeNodes.get(1), nodeList, null, null);
-        if(nodeBIndex.size()!=1) {
-            log.error("Corrupted Graph. detected {} nodes with ID {}", nodeBIndex.size(), edgeNodes.get(1).getNodeID());
-            if(log.isDebugEnabled()){
-                //volcado lista de nodos
-                StringBuffer sBuffer= new StringBuffer();
-
-                for(GraphNode<T> node: nodeList){
-                    sBuffer.append(node.getNodeID()).append("# ");
-                    for(GraphNode<T> edge: node.getNodeEdges()){
-                        sBuffer.append(edge.getNodeID()).append("; ");
-                    }
-                    sBuffer.append("\n");
-                }
-                log.debug("Corrupted Array Content: {}", sBuffer.toString());
-
-            }
-            throw new RuntimeException("Corrupted Graph. detected 2 nodes with same ID");
-        }
-        else{
-            ListIterator iterator = nodeList.listIterator(nodeBIndex.get(0).intValue());
-            iterator.next();
-            iterator.remove();
-        }
+        SortedList.remove(edgeNodes.get(1), nodeList, null, null); //O(log( n))
 
         if(log.isDebugEnabled()){
             //volcado lista de nodos
