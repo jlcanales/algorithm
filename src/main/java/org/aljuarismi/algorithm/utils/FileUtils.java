@@ -15,6 +15,7 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import org.aljuarismi.algorithm.graph.node.DirGraphNode;
 import org.aljuarismi.algorithm.graph.node.GraphNode;
 import org.aljuarismi.algorithm.list.SortedList;
 import org.slf4j.Logger;
@@ -144,6 +145,66 @@ public class FileUtils {
             for(GraphNode<Integer> node: graph){
                 sBuffer.append(node.getNodeID()).append("# ");
                 for(GraphNode<Integer> edge: node.getNodeEdges()){
+                    sBuffer.append(edge.getNodeID()).append("; ");
+                }
+                sBuffer.append("\n");
+            }
+            sBuffer.append("GRAPH END\n");
+            log.debug(sBuffer.toString());
+
+        }
+
+        return graph;
+    }
+
+
+    public static List<DirGraphNode<Integer>> readFileAsDirectedGraphNode(String filePath, int graphNodeNumber) throws java.io.IOException {
+
+
+        InputStream  stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(filePath);
+
+        if(stream == null) throw new java.io.IOException("Error accessing file: " + filePath);
+
+        InputStreamReader  inputStream = new InputStreamReader( stream, Charset.defaultCharset());
+        BufferedReader 			reader = new BufferedReader( inputStream);
+        String line;
+        Integer currentNodeId = 1;
+
+        List<DirGraphNode<Integer>> graph = new ArrayList<DirGraphNode<Integer>>();
+
+        //Populate the list
+        log.debug("Populating the node list");
+        for(int i=1; i <= graphNodeNumber; i++){
+            DirGraphNode<Integer> node = new DirGraphNode<Integer>();
+            node.setNodeID(i);
+            node.setTopologicalSortNumber(i);
+            graph.add(node);
+        }
+
+        log.debug("Loading Nodes");
+        while ((line = reader.readLine()) != null) {
+            // process the line.
+            log.trace(line);
+
+            String[] nodeLine = line.split("\\s+");
+
+            graph.get(Integer.parseInt(nodeLine[0])-1).addForwardNode(graph.get(Integer.parseInt(nodeLine[1])-1));
+            graph.get(Integer.parseInt(nodeLine[1])-1).addBackwardNode(graph.get(Integer.parseInt(nodeLine[0])-1));
+        }
+        reader.close();
+
+        if(log.isDebugEnabled()){
+            //volcado lista de nodos
+            StringBuffer sBuffer= new StringBuffer();
+
+            sBuffer.append("Readed Graph:\n");
+            for(DirGraphNode<Integer> node: graph){
+                sBuffer.append(node.getNodeID()).append("# ");
+                for(DirGraphNode<Integer> edge: node.getForwardsNodeEdges()){
+                    sBuffer.append(edge.getNodeID()).append("; ");
+                }
+                sBuffer.append("# ");
+                for(DirGraphNode<Integer> edge: node.getBackwardsNodeEdges()){
                     sBuffer.append(edge.getNodeID()).append("; ");
                 }
                 sBuffer.append("\n");

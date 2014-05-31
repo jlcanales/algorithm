@@ -16,6 +16,11 @@
         <appender-ref ref="Terminal" />
     </logger>
 
+    <logger name="org.aljuarismi.algorithm.graph.DirGraphAlgTest" additivity="false">
+        <level value="DEBUG" />
+        <appender-ref ref="Terminal" />
+    </logger>
+
     <logger name="org.aljuarismi.algorithm.utils.FileUtils" additivity="false">
         <level value="INFO" />
         <appender-ref ref="Terminal" />

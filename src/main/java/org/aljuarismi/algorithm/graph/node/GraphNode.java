@@ -30,6 +30,13 @@ public class GraphNode <T extends Comparable<T>> implements Comparable<GraphNode
     private List<GraphNode<T>> nodeEdges;
 
     /**
+     * Identifies the Directed Node Sort Number in the graph topology. This number is used as base for
+     * comparations (specially in the Kosarajou's algorithm)
+     */
+    private int topologicalSortNumber;
+
+
+    /**
      * Store a sorted list of all nodes that has been fused with this instance when a fuse
      * operation was applied over this node
      */
