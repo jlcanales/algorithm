@@ -14,7 +14,6 @@ import org.junit.runners.BlockJUnit4ClassRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -23,10 +22,10 @@ import java.util.Map;
  * Unit test for simple App.
  */
 @RunWith(BlockJUnit4ClassRunner.class)
-public class DirGraphAlgTest extends TestCase{
+public class KosarajuTest extends TestCase{
 
 
-    private static Logger log = LoggerFactory.getLogger(DirGraphAlgTest.class);
+    private static Logger log = LoggerFactory.getLogger(KosarajuTest.class);
 
     @Test
     public void dfsGrevCase1Test() throws Exception {
@@ -37,13 +36,16 @@ public class DirGraphAlgTest extends TestCase{
 
         //Given
         List<DirGraphNode<Integer>> inputGraph = FileUtils.readFileAsDirectedGraphNode("dirgraph/sccbase2.txt", 9);
-        Integer currentLabel = 0;
+
+        Kosaraju<Integer> kosaraju = new Kosaraju<Integer>();
+
+        kosaraju.setFullyExploredVertex(0);
         //When
         Iterator<DirGraphNode<Integer>> iter = inputGraph.iterator();
         while(iter.hasNext()) {
             DirGraphNode<Integer> node = iter.next();
             if(!node.isExplored()){
-                currentLabel = DirGraph.DFSGrev(inputGraph, node, currentLabel);
+                kosaraju.DFSGrev(inputGraph, node);
             }
         }
         //Then
@@ -52,11 +54,11 @@ public class DirGraphAlgTest extends TestCase{
         iter = inputGraph.iterator();
         while(iter.hasNext()){
             DirGraphNode<Integer> node = iter.next();
-            log.debug("Node: {}; order: {}", node.getNodeID(), node.getTopologicalSortNumber());
+            log.info("Node: {}; order: {}", node.getNodeID(), node.getTopologicalSortNumber());
         }
 
     }
-
+/*
     @Test
     public void kosarajuCase1Test() throws Exception {
 
@@ -78,7 +80,7 @@ public class DirGraphAlgTest extends TestCase{
             DirGraphNode<Integer> node = iter.next();
             log.debug("Node: {}; order: {}; Leader:" + node.getLeaderSortNumber().intValue() + ";", node.getNodeID(), node.getTopologicalSortNumber());
         }
-*/
+
         //Print Sorted Node volumes
         Map<Integer, Integer> sccMap = DirGraph.getSCCVolumes(inputGraph);
 
@@ -96,5 +98,6 @@ public class DirGraphAlgTest extends TestCase{
         }
         log.info(sb.toString());
     }
+*/
 
-    }
+}
