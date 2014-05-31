@@ -123,6 +123,16 @@ public class SortedList {
         return elementsFound;
     }
 
+    /**
+     * Revoves all the occurrences of one element in a sublist included in a shorted list. This algorithm is based on binary search
+     * so it performance is =(log(n))
+     * @param element Element to be removed
+     * @param list List where elements will be removed.
+     * @param leftIndex Sublist left element. 0 if null.
+     * @param rightIndex Sublist right element. Last element if null.
+     * @param <E> List elements type
+     * @return Number of removed elements
+     */
     public static <E extends Comparable<E>> int remove(E element, List<E> list, Integer leftIndex, Integer rightIndex){
 
         int elementsFound = 0;
@@ -162,25 +172,6 @@ public class SortedList {
 
                 //remove midElementIndex and next elements equals
 
- //               int currentIndex = midElementIndex;
- /*               E removedElement = (E)iterator.next();
-                while( currentIndex <= rightIndex &&
-                       removedElement.compareTo(element)==0){
-                    iterator.remove();
-                    removedElement = (E)iterator.next();
-                    currentIndex++;
-                    elementsFound++;
-                }
-*/
-/*                E removedElement;
-                do{
-                    removedElement = (E)iterator.next();
-                    iterator.remove();
-                    elementsFound++;
-                }while( iterator.hasNext() &&
-                        removedElement.compareTo(element)==0);
-
-*/
                 while( iterator.hasNext() &&
                        list.get(iterator.nextIndex()).compareTo(element)==0){
                     iterator.next();
