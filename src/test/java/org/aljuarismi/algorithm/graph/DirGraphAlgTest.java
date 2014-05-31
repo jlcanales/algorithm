@@ -36,7 +36,7 @@ public class DirGraphAlgTest extends TestCase{
         log.info("=================================================");
 
         //Given
-        List<DirGraphNode<Integer>> inputGraph = FileUtils.readFileAsDirectedGraphNode("dirgraph/sccbase2.txt", 9);
+        List<DirGraphNode<Integer>> inputGraph = FileUtils.readFileAsDirectedGraphNode("dirgraph/sccbase6.txt", 12);
         Integer currentLabel = 0;
         //When
         Iterator<DirGraphNode<Integer>> iter = inputGraph.iterator();
@@ -65,7 +65,7 @@ public class DirGraphAlgTest extends TestCase{
         log.info("=================================================");
 
         //Given
-        List<DirGraphNode<Integer>> inputGraph = FileUtils.readFileAsDirectedGraphNode("dirgraph/SCC.txt", 875714);
+        List<DirGraphNode<Integer>> inputGraph = FileUtils.readFileAsDirectedGraphNode("dirgraph/sccbase3.txt", 12);
 
         //When
         DirGraph.kosaraju(inputGraph);
@@ -73,12 +73,12 @@ public class DirGraphAlgTest extends TestCase{
         //Then
 
         //Log results
-/*        Iterator<DirGraphNode<Integer>> iter = inputGraph.iterator();
+        Iterator<DirGraphNode<Integer>> iter = inputGraph.iterator();
         while(iter.hasNext()){
             DirGraphNode<Integer> node = iter.next();
             log.debug("Node: {}; order: {}; Leader:" + node.getLeaderSortNumber().intValue() + ";", node.getNodeID(), node.getTopologicalSortNumber());
         }
-*/
+
         //Print Sorted Node volumes
         Map<Integer, Integer> sccMap = DirGraph.getSCCVolumes(inputGraph);
 

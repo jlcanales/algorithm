@@ -35,7 +35,8 @@ public class KosarajuTest extends TestCase{
         log.info("=================================================");
 
         //Given
-        List<DirGraphNode<Integer>> inputGraph = FileUtils.readFileAsDirectedGraphNode("dirgraph/sccbase2.txt", 9);
+        // sccbase3  -> Result 3,3,2,0,0 FALLO
+        List<DirGraphNode<Integer>> inputGraph = FileUtils.readFileAsDirectedGraphNode("dirgraph/sccbase3.txt", 12);
 
         Kosaraju<Integer> kosaraju = new Kosaraju<Integer>();
 
@@ -58,7 +59,7 @@ public class KosarajuTest extends TestCase{
         }
 
     }
-/*
+
     @Test
     public void kosarajuCase1Test() throws Exception {
 
@@ -69,8 +70,22 @@ public class KosarajuTest extends TestCase{
         //Given
         List<DirGraphNode<Integer>> inputGraph = FileUtils.readFileAsDirectedGraphNode("dirgraph/SCC.txt", 875714);
 
+        // sccbase3  -> Result 3,3,2,0,0
+        //List<DirGraphNode<Integer>> inputGraph = FileUtils.readFileAsDirectedGraphNode("dirgraph/sccbase3.txt", 8);
+
+        // sccbase4  -> Result 3,3,1,1,0
+        //List<DirGraphNode<Integer>> inputGraph = FileUtils.readFileAsDirectedGraphNode("dirgraph/sccbase4.txt", 8);
+
+        // sccbase5  -> Result 7,1,0,0,0
+        //List<DirGraphNode<Integer>> inputGraph = FileUtils.readFileAsDirectedGraphNode("dirgraph/sccbase5.txt", 8);
+
+        // sccbase6  -> Result 6,3,2,1,0
+        //List<DirGraphNode<Integer>> inputGraph = FileUtils.readFileAsDirectedGraphNode("dirgraph/sccbase6.txt", 12);
+
         //When
-        DirGraph.kosaraju(inputGraph);
+        log.info("Stating kosaraju SCC");
+        Kosaraju<Integer> kosaraju = new Kosaraju<Integer>();
+        kosaraju.call(inputGraph);
 
         //Then
 
@@ -78,15 +93,18 @@ public class KosarajuTest extends TestCase{
 /*        Iterator<DirGraphNode<Integer>> iter = inputGraph.iterator();
         while(iter.hasNext()){
             DirGraphNode<Integer> node = iter.next();
+
+            //log.info("Node: {}; order: {}", node.getNodeID(), node.getTopologicalSortNumber());
             log.debug("Node: {}; order: {}; Leader:" + node.getLeaderSortNumber().intValue() + ";", node.getNodeID(), node.getTopologicalSortNumber());
         }
-
+*/
         //Print Sorted Node volumes
         Map<Integer, Integer> sccMap = DirGraph.getSCCVolumes(inputGraph);
 
         StringBuilder sb = new StringBuilder();
         Iterator<Map.Entry<Integer, Integer>> entryIter = sccMap.entrySet().iterator();
-        while (entryIter.hasNext()) {
+        int elements = 0;
+        while (entryIter.hasNext() && elements < 10) {
             Map.Entry<Integer, Integer> entry = entryIter.next();
             sb.append(entry.getKey());
             sb.append('=').append('"');
@@ -95,9 +113,10 @@ public class KosarajuTest extends TestCase{
             if (entryIter.hasNext()) {
                 sb.append(';').append(' ');
             }
+            elements++;
         }
         log.info(sb.toString());
+
     }
-*/
 
 }

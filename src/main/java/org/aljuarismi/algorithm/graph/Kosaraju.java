@@ -1,7 +1,9 @@
 package org.aljuarismi.algorithm.graph;
 
 import org.aljuarismi.algorithm.graph.node.DirGraphNode;
+import org.aljuarismi.algorithm.sort.RevQuickSort;
 import org.apache.spark.api.java.function.Function2;
+import org.apache.spark.api.java.function.*;
 
 import java.util.Iterator;
 import java.util.List;
@@ -10,7 +12,7 @@ import java.util.Stack;
 /**
  * Created by javadev on 31/05/14.
  */
-public class Kosaraju<T extends Comparable<T>> extends Function2<List<DirGraphNode<T>>,DirGraphNode<T>,Integer> {
+public class Kosaraju<T extends Comparable<T>> extends VoidFunction<List<DirGraphNode<T>>> {
 
     /**
      * Stack to store in process graph nodes
@@ -29,6 +31,9 @@ public class Kosaraju<T extends Comparable<T>> extends Function2<List<DirGraphNo
      * (Second DFS_Loop)
      */
     private Integer currentLeader;
+
+
+
     /**
      * Creates Kosaraju's function
      */
@@ -37,19 +42,35 @@ public class Kosaraju<T extends Comparable<T>> extends Function2<List<DirGraphNo
     }
 
     @Override
-    public Integer call(List<DirGraphNode<T>> dirGraph, DirGraphNode<T> startNode) throws Exception {
-/**
+    public void call(List<DirGraphNode<T>> dirGraph) throws Exception {
+
         fullyExploredVertex = 0;
 
-        Iterator<DirGraphNode<T>> iter = inputGraph.iterator();
+        Iterator<DirGraphNode<T>> iter = dirGraph.iterator();
         while(iter.hasNext()) {
             DirGraphNode<T> node = iter.next();
             if(!node.isExplored()){
-                currentLabel = DirGraph.DFSGrev(inputGraph, node, currentLabel);
+                DFSGrev(dirGraph, node);
+
             }
         }
-*/
-        return null;
+
+        RevQuickSort<DirGraphNode<T>> sort = new RevQuickSort<DirGraphNode<T>>();
+        sort.call(dirGraph, null, null);
+
+        // forward dfs
+        // use negative logic for isExplored flag to avoid reseting all the
+        // nodes in the graph
+        Iterator<DirGraphNode<T>> fEdgeIter = dirGraph.iterator();
+        while(fEdgeIter.hasNext()){
+            DirGraphNode<T> node = fEdgeIter.next();
+            if(node.isExplored()){ //if is NOT explored
+                currentLeader = node.getTopologicalSortNumber();
+                DFSG(dirGraph, node);
+            }
+
+        }
+
     }
 
     /**
@@ -115,7 +136,7 @@ public class Kosaraju<T extends Comparable<T>> extends Function2<List<DirGraphNo
             Iterator<DirGraphNode<T>> fEdgeIter = nodeI.getForwardsNodeEdges().iterator();
             while( fEdgeIter.hasNext()){
                 DirGraphNode<T> nodeV = fEdgeIter.next();
-                if(!nodeV.isExplored()){
+                if(nodeV.isExplored()){
                     hasNonProcesedEdges = false;
                     stack.push(nodeV);
                 }

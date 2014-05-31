@@ -131,8 +131,8 @@ public class DirGraph {
         public int compare(Integer a, Integer b) {
             if (a.equals(b)) return 0;
             if (base.get(a) >= base.get(b)) {
-                return 1;
-            } else return -1;
+                return -1;
+            } else return 1;
         }
     }
 
