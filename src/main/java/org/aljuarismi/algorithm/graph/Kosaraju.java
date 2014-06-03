@@ -11,7 +11,7 @@ import java.util.Stack;
 /**
  * Created by javadev on 31/05/14.
  */
-public class Kosaraju extends VoidFunction<List<GNode<T>>> {
+public class Kosaraju<T> extends VoidFunction<List<GNode<T>>> {
 
     /**
      * Stack to store in process graph nodes
@@ -47,7 +47,7 @@ public class Kosaraju extends VoidFunction<List<GNode<T>>> {
 
         Iterator<GNode<T>> iter = dirGraph.iterator();
         while(iter.hasNext()) {
-            GNode<?> node = iter.next();
+            GNode<T> node = iter.next();
             if(!node.isExplored()){
                 DFSGrev(dirGraph, node);
 
@@ -91,9 +91,9 @@ public class Kosaraju extends VoidFunction<List<GNode<T>>> {
 
             nodeI.setExplored(true);
 
-            Iterator<GNode<T>> fEdgeIter = nodeI.getBackwardsNodeEdges().iterator();
+            Iterator<? extends GNode<?>> fEdgeIter = nodeI.getBackwardsNodeEdges().iterator();
             while( fEdgeIter.hasNext()){
-                GNode<T> nodeV = fEdgeIter.next();
+                GNode<T> nodeV = (GNode<T>)fEdgeIter.next();
                 if(!nodeV.isExplored()){
                     hasNonProcesedEdges = false;
                     stack.push(nodeV);
@@ -134,7 +134,7 @@ public class Kosaraju extends VoidFunction<List<GNode<T>>> {
 
             Iterator<? extends GNode<?>> fEdgeIter = nodeI.getForwardsNodeEdges().iterator();
             while( fEdgeIter.hasNext()){
-                GNode<T> nodeV = fEdgeIter.next();
+                GNode<T> nodeV = (GNode<T> )fEdgeIter.next();
                 if(nodeV.isExplored()){
                     hasNonProcesedEdges = false;
                     stack.push(nodeV);
