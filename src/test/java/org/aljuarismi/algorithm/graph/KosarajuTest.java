@@ -7,6 +7,7 @@ package org.aljuarismi.algorithm.graph;
 import junit.framework.TestCase;
 import org.aljuarismi.algorithm.graph.node.DirGraph;
 import org.aljuarismi.algorithm.graph.node.DirGraphNode;
+import org.aljuarismi.algorithm.graph.node.GNode;
 import org.aljuarismi.algorithm.utils.FileUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,15 +37,15 @@ public class KosarajuTest extends TestCase{
 
         //Given
         // sccbase3  -> Result 3,3,2,0,0 FALLO
-        List<DirGraphNode<Integer>> inputGraph = FileUtils.readFileAsDirectedGraphNode("dirgraph/sccbase3.txt", 12);
+        List<GNode<Integer>> inputGraph = FileUtils.readFileAsGNodeList("dirgraph/sccbase3.txt", 12);
 
-        Kosaraju<Integer> kosaraju = new Kosaraju<Integer>();
+        Kosaraju kosaraju = new Kosaraju();
 
         kosaraju.setFullyExploredVertex(0);
         //When
-        Iterator<DirGraphNode<Integer>> iter = inputGraph.iterator();
+        Iterator<GNode<Integer>> iter = inputGraph.iterator();
         while(iter.hasNext()) {
-            DirGraphNode<Integer> node = iter.next();
+            GNode<Integer> node = iter.next();
             if(!node.isExplored()){
                 kosaraju.DFSGrev(inputGraph, node);
             }
@@ -54,8 +55,8 @@ public class KosarajuTest extends TestCase{
         //Log results
         iter = inputGraph.iterator();
         while(iter.hasNext()){
-            DirGraphNode<Integer> node = iter.next();
-            log.info("Node: {}; order: {}", node.getNodeID(), node.getTopologicalSortNumber());
+            GNode<Integer> node = iter.next();
+            log.info("Node: {}; order: {}", node.getPayLoad(), node.getNodeID());
         }
 
     }
@@ -68,19 +69,24 @@ public class KosarajuTest extends TestCase{
         log.info("=================================================");
 
         //Given
-        List<DirGraphNode<Integer>> inputGraph = FileUtils.readFileAsDirectedGraphNode("dirgraph/SCC.txt", 875714);
+        // SCC -> result 434821,968,459,313,211,205,197,177,167,162,
+
+        //List<GNode<Integer>> inputGraph = FileUtils.readFileAsGNodeList("dirgraph/SCC.txt", 875714);
 
         // sccbase3  -> Result 3,3,2,0,0
-        //List<DirGraphNode<Integer>> inputGraph = FileUtils.readFileAsDirectedGraphNode("dirgraph/sccbase3.txt", 8);
+        //List<GNode<Integer>> inputGraph = FileUtils.readFileAsGNodeList("dirgraph/sccbase2.txt", 9);
+
+        // sccbase3  -> Result 3,3,2,0,0
+        //List<GNode<Integer>> inputGraph = FileUtils.readFileAsGNodeList("dirgraph/sccbase3.txt", 8);
 
         // sccbase4  -> Result 3,3,1,1,0
-        //List<DirGraphNode<Integer>> inputGraph = FileUtils.readFileAsDirectedGraphNode("dirgraph/sccbase4.txt", 8);
+        //List<GNode<Integer>> inputGraph = FileUtils.readFileAsGNodeList("dirgraph/sccbase4.txt", 8);
 
         // sccbase5  -> Result 7,1,0,0,0
-        //List<DirGraphNode<Integer>> inputGraph = FileUtils.readFileAsDirectedGraphNode("dirgraph/sccbase5.txt", 8);
+        //List<GNode<Integer>> inputGraph = FileUtils.readFileAsGNodeList("dirgraph/sccbase5.txt", 8);
 
         // sccbase6  -> Result 6,3,2,1,0
-        //List<DirGraphNode<Integer>> inputGraph = FileUtils.readFileAsDirectedGraphNode("dirgraph/sccbase6.txt", 12);
+        List<GNode<Integer>> inputGraph = FileUtils.readFileAsGNodeList("dirgraph/sccbase6.txt", 12);
 
         //When
         log.info("Stating kosaraju SCC");
@@ -90,16 +96,16 @@ public class KosarajuTest extends TestCase{
         //Then
 
         //Log results
-/*        Iterator<DirGraphNode<Integer>> iter = inputGraph.iterator();
+        Iterator<GNode<Integer>> iter = inputGraph.iterator();
         while(iter.hasNext()){
-            DirGraphNode<Integer> node = iter.next();
+            GNode<Integer> node = iter.next();
 
             //log.info("Node: {}; order: {}", node.getNodeID(), node.getTopologicalSortNumber());
-            log.debug("Node: {}; order: {}; Leader:" + node.getLeaderSortNumber().intValue() + ";", node.getNodeID(), node.getTopologicalSortNumber());
+            log.debug("Node: {}; order: {}; Leader:" + node.getLeaderSortNumber().intValue() + ";", node.getPayLoad().toString(), node.getNodeID());
         }
-*/
+
         //Print Sorted Node volumes
-        Map<Integer, Integer> sccMap = DirGraph.getSCCVolumes(inputGraph);
+        /*        Map<Integer, Integer> sccMap = DirGraph.getSCCVolumes(inputGraph);
 
         StringBuilder sb = new StringBuilder();
         Iterator<Map.Entry<Integer, Integer>> entryIter = sccMap.entrySet().iterator();
@@ -116,6 +122,7 @@ public class KosarajuTest extends TestCase{
             elements++;
         }
         log.info(sb.toString());
+  */
 
     }
 
