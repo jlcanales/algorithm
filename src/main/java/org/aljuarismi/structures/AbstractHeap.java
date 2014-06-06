@@ -1,5 +1,7 @@
 package org.aljuarismi.structures;
 
+import org.aljuarismi.structures.heap.HeapNotificable;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -143,6 +145,13 @@ public abstract class AbstractHeap<E extends Comparable<? super E>> implements C
     public void insert(E val) {
         int curr = Heap.size();
         Heap.add(val);             // Start at end of heap
+
+        for(Class c: val.getClass().getInterfaces()){
+            if(c.equals(HeapNotificable.class)) {
+                ((HeapNotificable) val).setHeapPosition(Heap.size() - 1);
+            }
+        }
+
         // Now sift up until curr's parent's key > curr's key
         bubbleup(curr);
     }

@@ -6,6 +6,8 @@ package org.aljuarismi.structures;
  Copyright 2008-2011 by Clifford A. Shaffer
  */
 
+import org.aljuarismi.structures.heap.HeapNotificable;
+
 import java.util.*;
 import java.math.*;
 
@@ -18,9 +20,21 @@ class DSutil<E> {
      @param p2 Index of another Object A
      */
     public static <E> void swap(List<E> A, int p1, int p2) {
-        E temp = A.get(p1);
-        A.set(p1, A.get(p2));
-        A.set(p2, temp);
+        E auxP1 = A.get(p1);
+        E auxP2 = A.get(p2);
+
+        for(Class c: auxP1.getClass().getInterfaces()){
+            if(c.equals(HeapNotificable.class)) {
+                ((HeapNotificable) auxP1).setHeapPosition(p2);
+            }
+        }
+        for(Class c: auxP2.getClass().getInterfaces()){
+            if(c.equals(HeapNotificable.class)) {
+                ((HeapNotificable) auxP2).setHeapPosition(p1);
+            }
+        }
+        A.set(p1, auxP2);
+        A.set(p2, auxP1);
     }
 
     /** Randomly permute the Objects in an array.
