@@ -51,7 +51,7 @@ public class MinHeapTest extends TestCase
         log.info("Input Data: {}", sb.toString());
 
         //When
-        AbstractHeap<Integer> AH = new AbstractHeap<Integer>(iArray, A.size());
+        MinHeap<Integer> AH = new MinHeap<Integer>(iArray, A.size());
 
         Integer[] iArray2 = AH.toArray(new Integer[AH.size()]);
         sb = new StringBuilder();
@@ -89,7 +89,7 @@ public class MinHeapTest extends TestCase
         log.info("Input Data: {}", sb.toString());
 
         //When
-        AbstractHeap<Integer> AH = new AbstractHeap<Integer>(iArray, A.size());
+        MinHeap<Integer> AH = new MinHeap<Integer>(iArray, A.size());
 
         sb = new StringBuilder();
         for (i=0; i<20; i++) {
@@ -127,7 +127,7 @@ public class MinHeapTest extends TestCase
 
 
         //When
-        AbstractHeap<Integer> AH = new AbstractHeap<Integer>(iArray, A.size());
+        MinHeap<Integer> AH = new MinHeap<Integer>(iArray, A.size());
         AH.add(new Integer(20));
 
         Integer[] iArray2 = AH.toArray(new Integer[AH.size()]);
@@ -168,7 +168,7 @@ public class MinHeapTest extends TestCase
         log.info("Input Data: {}", sb.toString());
 
         //When
-        AbstractHeap<Integer> AH = new AbstractHeap<Integer>(iArray, A.size());
+        MinHeap<Integer> AH = new MinHeap<Integer>(iArray, A.size());
 
         AH.add(new Integer(0));
 
@@ -209,7 +209,7 @@ public class MinHeapTest extends TestCase
         log.info("Input Data: {}", sb.toString());
 
 
-        AbstractHeap<Integer> AH = new AbstractHeap<Integer>(iArray, A.size());
+        MinHeap<Integer> AH = new MinHeap<Integer>(iArray, A.size());
 
         //********************************************
         // Print internal structure

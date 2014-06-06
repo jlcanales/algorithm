@@ -7,7 +7,7 @@ import java.util.Iterator;
 /**
  * Created by mldev on 06/06/14.
  */
-public class AbstractHeap<E extends Comparable<? super E>> implements Collection<E> {
+public abstract class AbstractHeap<E extends Comparable<? super E>> implements Collection<E> {
 
     protected ArrayList<E> Heap;   // Pointer to the heap array
 
@@ -19,6 +19,12 @@ public class AbstractHeap<E extends Comparable<? super E>> implements Collection
             insert(h[i]);
         }
     }
+
+    /** Constructor supporting preloading of heap contents */
+    public AbstractHeap(){
+        Heap = new ArrayList<E>();
+    }
+
 
     @Override
     public int size() {
@@ -106,13 +112,13 @@ public class AbstractHeap<E extends Comparable<? super E>> implements Collection
     /**
      * @return True if pos a leaf position, false otherwise
      */
-    private boolean isLeaf(int pos)
+    protected boolean isLeaf(int pos)
     { return (pos >= Heap.size()/2) && (pos < Heap.size()); }
 
     /**
      * @return Position for left child of pos
      */
-    private int leftchild(int pos) {
+    protected int leftchild(int pos) {
         assert pos < Heap.size()/2 : "Position has no left child";
         return 2*pos + 1;
     }
@@ -120,7 +126,7 @@ public class AbstractHeap<E extends Comparable<? super E>> implements Collection
     /**
      * @return Position for right child of pos
      */
-    private int rightchild(int pos) {
+    protected int rightchild(int pos) {
         assert pos < (Heap.size()-1)/2 : "Position has no right child";
         return 2*pos + 2;
     }
@@ -128,7 +134,7 @@ public class AbstractHeap<E extends Comparable<? super E>> implements Collection
     /**
      * @return Position for parent
      */
-    private int parent(int pos) {
+    protected int parent(int pos) {
         assert pos > 0 : "Position has no parent";
         return (pos-1)/2;
     }
@@ -147,26 +153,9 @@ public class AbstractHeap<E extends Comparable<? super E>> implements Collection
     /**
      * Put element in its correct place
      */
-    private void siftdown(int pos) {
-        assert (pos >= 0) && (pos < Heap.size()) : "Illegal heap position";
-        while (!isLeaf(pos)) {
-            int j = leftchild(pos);
-            if ((j<(Heap.size()-1)) && (Heap.get(j).compareTo(Heap.get(j+1)) > 0))
-                j++; // j is now index of child with lower value
-            if (Heap.get(pos).compareTo(Heap.get(j)) <= 0) return;
-            DSutil.swap(Heap, pos, j);
-            pos = j;  // Move down
-        }
-    }
+    protected abstract void siftdown(int pos);
 
-    private void bubbleup(int pos){
-        assert (pos >= 0) && (pos < Heap.size()) : "Illegal heap position";
-        while ((pos > 0) &&
-                (Heap.get(pos).compareTo(Heap.get(parent(pos))) < 0)) {
-            DSutil.swap(Heap, pos, parent(pos));
-            pos = parent(pos);
-        }
-    }
+    protected abstract void bubbleup(int pos);
 
     /** Remove and return maximum value */
     public E removeTop() {
