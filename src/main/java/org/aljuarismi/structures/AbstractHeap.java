@@ -9,10 +9,10 @@ import java.util.Iterator;
  */
 public class AbstractHeap<E extends Comparable<? super E>> implements Collection<E> {
 
-    private ArrayList<E> Heap;   // Pointer to the heap array
+    protected ArrayList<E> Heap;   // Pointer to the heap array
 
     /** Constructor supporting preloading of heap contents */
-    public AbstractHeap(E[] h, int num, int max){
+    public AbstractHeap(E[] h, int num){
         Heap = new ArrayList<E>();
 
         for(int i = 0; i < num; i++){
@@ -152,8 +152,8 @@ public class AbstractHeap<E extends Comparable<? super E>> implements Collection
         while (!isLeaf(pos)) {
             int j = leftchild(pos);
             if ((j<(Heap.size()-1)) && (Heap.get(j).compareTo(Heap.get(j+1)) > 0))
-                j++; // j is now index of child with l∫ower value
-            if (Heap.get(pos).compareTo(Heap.get(j)) >= 0) return;
+                j++; // j is now index of child with lower value
+            if (Heap.get(pos).compareTo(Heap.get(j)) <= 0) return;
             DSutil.swap(Heap, pos, j);
             pos = j;  // Move down
         }
@@ -173,7 +173,7 @@ public class AbstractHeap<E extends Comparable<? super E>> implements Collection
         assert Heap.size() > 0 : "Removing from empty heap";
         DSutil.swap(Heap, 0, Heap.size()-1); // Swap maximum with last value
         //remove the last element
-        E topElement = remove(Heap.size()-1);
+        E topElement = Heap.remove(Heap.size()-1);
 
         if (Heap.size() != 0)      // Not on last element
             siftdown(0);   // Put new heap root val in correct place
@@ -185,11 +185,11 @@ public class AbstractHeap<E extends Comparable<? super E>> implements Collection
         assert (pos >= 0) && (pos < Heap.size()) : "Illegal heap position";
         E element;
         if (pos == (Heap.size() - 1)) {
-            element = remove(Heap.size() - 1);// Last element, no work to be done
+            element = Heap.remove(Heap.size() - 1);// Last element, no work to be done
         }
         else {
             DSutil.swap(Heap, pos, Heap.size()-1); // Swap with last value
-            element = remove(Heap.size()-1);
+            element = Heap.remove(Heap.size()-1);
             // If we just swapped in a big value, push it up
             //bubbleup(pos);
             siftdown(pos); // If it is little, push down
