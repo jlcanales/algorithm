@@ -27,6 +27,7 @@ public class MinHeap<E extends Comparable<? super E>> extends AbstractHeap<E> {
     /**
      * Put element in its correct place
      */
+    @Override
     protected void siftdown(int pos) {
         assert (pos >= 0) && (pos < Heap.size()) : "Illegal heap position";
         while (!isLeaf(pos)) {
@@ -39,6 +40,7 @@ public class MinHeap<E extends Comparable<? super E>> extends AbstractHeap<E> {
         }
     }
 
+    @Override
     protected void bubbleup(int pos){
         assert (pos >= 0) && (pos < Heap.size()) : "Illegal heap position";
         while ((pos > 0) &&
