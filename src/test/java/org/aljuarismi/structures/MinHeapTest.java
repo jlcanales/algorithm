@@ -249,5 +249,41 @@ public class MinHeapTest extends TestCase
 
     }
 
+    @Test
+    public void heapNotificationCase1Test() throws Exception
+    {
 
+        log.info("=================================================");
+        log.info("...Heap notification interface test");
+        log.info("=================================================");
+
+
+        //Given
+        int i;
+        Integer[] iArray = new Integer[]{10,5,16,13,7,6,14,11,12,1,19,2,4,15,18,17,9,3,0,8};
+        ArrayList<HeapInteger> A = new ArrayList<HeapInteger>();
+        for (i=0; i<20; i++)
+            A.add(new HeapInteger(iArray[i]));
+
+        HeapInteger[] heapArray = A.toArray(new HeapInteger[A.size()]);
+
+        StringBuilder sb = new StringBuilder();
+        for (i=0; i<20; i++) {
+            sb.append(heapArray[i].getHeapPosition()).append(" ");
+        }
+        log.info("Input HeapPosition Data: {}", sb.toString());
+
+        //When
+        MinHeap<HeapInteger> AH = new MinHeap<HeapInteger>(heapArray, A.size());
+
+        HeapInteger[] heapArray2 = AH.toArray(new HeapInteger[AH.size()]);
+        sb = new StringBuilder();
+        for (i=0; i<20; i++) {
+            sb.append(heapArray2[i].getHeapPosition()).append(" ");
+        }
+        log.info("Result HeapPosition: {}", sb.toString());
+
+        //Then
+        Assert.assertEquals("0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 ", sb.toString());
+    }
 }

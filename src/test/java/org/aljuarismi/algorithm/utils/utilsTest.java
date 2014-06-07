@@ -1,7 +1,9 @@
 package org.aljuarismi.algorithm.utils;
 
 import junit.framework.TestCase;
+import org.aljuarismi.algorithm.graph.node.DNode;
 import org.aljuarismi.algorithm.graph.node.DirGraphNode;
+import org.aljuarismi.algorithm.graph.node.Edge;
 import org.aljuarismi.algorithm.graph.node.GraphNode;
 import org.aljuarismi.algorithm.sort.QuickSort;
 import org.junit.Assert;
@@ -78,6 +80,37 @@ public class utilsTest
         Assert.assertEquals(3,inputGraph.get(5).getForwardsNodeEdges().get(0).getNodeID().intValue());
         Assert.assertEquals(8,inputGraph.get(5).getForwardsNodeEdges().get(1).getNodeID().intValue());
         Assert.assertEquals(9,inputGraph.get(5).getBackwardsNodeEdges().get(0).getNodeID().intValue());
+    }
+
+
+    @Test
+    public void readDNodesCase1Test() throws Exception
+    {
+
+        log.info("=================================================");
+        log.info("...Read DNodes from file");
+        log.info("=================================================");
+
+
+        //Given
+        List<DNode<Integer>> inputGraph = FileUtils.readFileAsDNodeList("dijkstra/dijkstraData.txt");
+
+        StringBuffer sBuffer= new StringBuffer();
+
+        for(DNode<Integer> node: inputGraph){
+            sBuffer.append(node.getNodeID()).append("# ");
+            for(Edge<Integer> edge: node.getForwardsNodeEdges()){
+                sBuffer.append(edge.destination.getNodeID()).append(",")
+                        .append(edge.distance).append("; ");
+            }
+            sBuffer.append("\n");
+        }
+
+        log.info("Input Array Size: {};",inputGraph.size());
+        log.info("Input Array Content: {}",sBuffer.toString());
+
+        //Then
+        Assert.assertEquals(8, inputGraph.size());
     }
 
 }

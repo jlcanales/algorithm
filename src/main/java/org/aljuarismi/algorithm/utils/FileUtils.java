@@ -15,14 +15,13 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import org.aljuarismi.algorithm.graph.node.DirGraphNode;
-import org.aljuarismi.algorithm.graph.node.GNode;
-import org.aljuarismi.algorithm.graph.node.GraphNode;
+import org.aljuarismi.algorithm.graph.node.*;
 import org.aljuarismi.algorithm.list.SortedList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import scala.Int;
 
-
+import static org.aljuarismi.algorithm.graph.node.DNode.*;
 
 
 public class FileUtils {
@@ -284,7 +283,66 @@ public class FileUtils {
 
 
 
+    public static List<DNode<Integer>> readFileAsDNodeList(String filePath) throws java.io.IOException {
 
+        InputStream  stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(filePath);
+
+        if(stream == null) throw new java.io.IOException("Error accessing file: " + filePath);
+
+        InputStreamReader  inputStream = new InputStreamReader( stream, Charset.defaultCharset());
+        BufferedReader 			reader = new BufferedReader( inputStream);
+        String line;
+
+        //GENERATE NODE LIST
+        List<DNode<Integer>> graph = new ArrayList<DNode<Integer>>();
+        List<String> fileLines = new ArrayList<String>();
+        while ((line = reader.readLine()) != null) {
+            // process the line.
+            log.debug(line);
+            fileLines.add(line);
+            int nodeID = Integer.parseInt(line.split("\t")[0]);
+            DNode<Integer> node = new DNode<Integer>();
+            node.setNodeID(nodeID);
+            node.setPayLoad(nodeID);
+            graph.add(node);
+        }
+        reader.close();
+
+        // ADD NODE REFERENCES
+        for(int nodeIndex = 0; nodeIndex < graph.size(); nodeIndex++){
+            String[] nodeLine = fileLines.get(nodeIndex).split("\t");
+
+            DNode<Integer> node = graph.get(Integer.parseInt(nodeLine[0])-1);
+            for(int edgesPoints = 1; edgesPoints < nodeLine.length; edgesPoints++){
+                String[] edgeInfo = nodeLine[edgesPoints].split(",");
+                Edge<Integer> newEdge;
+                newEdge = new Edge<Integer>(graph.get(Integer.parseInt(edgeInfo[0]) - 1),
+                                                             Long.parseLong(edgeInfo[1]));
+
+                node.addForwardNode(newEdge);
+            }
+        }
+
+        if(log.isDebugEnabled()){
+            //volcado lista de nodos
+            StringBuffer sBuffer= new StringBuffer();
+
+            sBuffer.append("Readed Graph:\n");
+            for(DNode<Integer> node: graph){
+                sBuffer.append(node.getNodeID()).append("# ");
+                for(Edge<Integer> edge: node.getForwardsNodeEdges()){
+                    sBuffer.append(edge.destination.getNodeID()).append(",")
+                            .append(edge.distance).append("; ");
+                }
+                sBuffer.append("\n");
+            }
+            sBuffer.append("GRAPH END\n");
+            log.debug(sBuffer.toString());
+
+        }
+
+        return graph;
+    }
 
 
 }
