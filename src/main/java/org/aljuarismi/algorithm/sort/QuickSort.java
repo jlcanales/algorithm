@@ -9,7 +9,7 @@ import org.apache.spark.api.java.function.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class QuickSort<T extends Comparable<T>> extends Function3<List<T>, Integer, Integer, Long> {
+public class QuickSort<T extends Comparable<? super T>> extends Function3<List<T>, Integer, Integer, Long> {
 
 	/**
 	 * 
