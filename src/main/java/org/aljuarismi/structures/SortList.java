@@ -36,52 +36,63 @@ public class SortList<E extends Comparable<? super E>> implements List<E> {
 
     @Override
     public int size() {
-        return 0;
+        return elementList.size();
     }
 
     @Override
     public boolean isEmpty() {
-        return false;
+        return elementList.isEmpty();
     }
 
     @Override
     public boolean contains(Object o) {
-        return false;
+        E object = (E) o;
+        List<Integer> output = search(object, null, null);
+        return output.isEmpty();
     }
 
     @Override
     public Iterator<E> iterator() {
-        return null;
+        return elementList.iterator();
     }
 
     @Override
     public Object[] toArray() {
-        return new Object[0];
+        return elementList.toArray();
     }
 
     @Override
     public <T> T[] toArray(T[] a) {
-        return null;
+        return elementList.toArray(a);
     }
 
     @Override
     public boolean add(E e) {
-        return false;
+        insert(e, null, null);
+        return true;
     }
 
     @Override
     public boolean remove(Object o) {
-        return false;
+        E object = (E) o;
+        int removed = remove(object, null, null);
+        return removed != 0;
     }
 
     @Override
     public boolean containsAll(Collection<?> c) {
-        return false;
+        return elementList.containsAll(c);
     }
 
     @Override
     public boolean addAll(Collection<? extends E> c) {
-        return false;
+// TODO: utilizar merge list.
+        Iterator iter = c.iterator();
+        while(iter.hasNext()){
+            E element = (E) iter.next();
+            insert(element, null, null);
+        }
+        return true;
     }
 
     @Override
@@ -91,7 +102,14 @@ public class SortList<E extends Comparable<? super E>> implements List<E> {
 
     @Override
     public boolean removeAll(Collection<?> c) {
-        return false;
+
+        Iterator iter = c.iterator();
+        int originalSize = elementList.size();
+        while(iter.hasNext()){
+            E element = (E) iter.next();
+            remove(element, null, null);
+        }
+        return originalSize != elementList.size();
     }
 
     @Override
@@ -101,12 +119,12 @@ public class SortList<E extends Comparable<? super E>> implements List<E> {
 
     @Override
     public void clear() {
-
+        elementList.clear();
     }
 
     @Override
     public E get(int index) {
-        return null;
+        return elementList.get(index);
     }
 
     @Override
@@ -116,37 +134,43 @@ public class SortList<E extends Comparable<? super E>> implements List<E> {
 
     @Override
     public void add(int index, E element) {
-
+        insert(element, null, null);
     }
 
     @Override
     public E remove(int index) {
-        return null;
+        return elementList.remove(index);
     }
 
     @Override
     public int indexOf(Object o) {
-        return 0;
+        E object = (E) o;
+        List<Integer> output = search(object, null, null);
+        if(output.isEmpty()) return -1;
+        return output.get(0);
     }
 
     @Override
     public int lastIndexOf(Object o) {
-        return 0;
+        E object = (E) o;
+        List<Integer> output = search(object, null, null);
+        if(output.isEmpty()) return -1;
+        return output.get(output.size()-1);
     }
 
     @Override
     public ListIterator<E> listIterator() {
-        return null;
+        return elementList.listIterator();
     }
 
     @Override
     public ListIterator<E> listIterator(int index) {
-        return null;
+        return elementList.listIterator(index);
     }
 
     @Override
     public List<E> subList(int fromIndex, int toIndex) {
-        return null;
+        return elementList.subList(fromIndex, toIndex);
     }
 
 
