@@ -1,7 +1,6 @@
-package org.aljuarismi.algorithm;
+package org.aljuarismi.algorithm.hashing;
 
 import junit.framework.TestCase;
-import org.aljuarismi.algorithm.hashing.TwoSum;
 import org.aljuarismi.algorithm.utils.FileUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -10,7 +9,6 @@ import org.junit.runners.BlockJUnit4ClassRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.util.Hashtable;
 
 /**
