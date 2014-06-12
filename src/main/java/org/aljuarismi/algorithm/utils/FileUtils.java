@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Scanner;
 
@@ -283,7 +284,42 @@ public class FileUtils {
     }
 
 
+    /**
+     * Open a file identified by filePath and return its content as a integer array
+     * The file must contain a integer in each line.
+     * @param filePath      name of file to open. The file can reside
+     *                      anywhere in the classpath
+     * @return int[] File content as Array
+     */
+    public static Hashtable<Long, Integer> readFileAsHashTable(String filePath, int mapMaxSize) throws java.io.IOException {
 
+        Hashtable<Long, Integer> resultTable = new Hashtable<Long, Integer>(mapMaxSize);
+
+        InputStream  stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(filePath);
+
+        if(stream == null) throw new java.io.IOException("Error accessing file: " + filePath);
+
+        InputStreamReader  inputStream = new InputStreamReader( stream, Charset.defaultCharset());
+        BufferedReader 			reader = new BufferedReader( inputStream);
+        String line;
+
+        log.debug("Loading Nodes");
+        while ((line = reader.readLine()) != null) {
+            // process the line.
+            log.trace(line);
+
+            Long input = Long.parseLong(line);
+            if(resultTable.containsKey(input)){
+                resultTable.put(input, resultTable.get(input)+1);
+            }
+            else{
+                resultTable.put(input, 1);
+            }
+        }
+        reader.close();
+
+        return resultTable;
+    }
 
 
 

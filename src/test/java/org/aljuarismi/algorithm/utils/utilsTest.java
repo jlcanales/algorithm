@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 
 
@@ -78,6 +79,29 @@ public class utilsTest
         Assert.assertEquals(3,inputGraph.get(5).getForwardsNodeEdges().get(0).getNodeID().intValue());
         Assert.assertEquals(8,inputGraph.get(5).getForwardsNodeEdges().get(1).getNodeID().intValue());
         Assert.assertEquals(9,inputGraph.get(5).getBackwardsNodeEdges().get(0).getNodeID().intValue());
+    }
+
+    @Test
+    public void readHashTableCase1Test() throws IOException {
+        log.info("=================================================");
+        log.info("...Read Integer hashtable from file");
+        log.info("=================================================");
+
+        //Given
+        Hashtable<Long, Integer> inputTable = FileUtils.readFileAsHashTable("hashing/integers.txt", 11);
+
+
+        //Then
+        int tableSize = inputTable.keySet().size();
+
+        Assert.assertEquals(9, tableSize);
+
+        StringBuffer sBuffer= new StringBuffer();
+        for(Long key: inputTable.keySet()){
+            sBuffer.append(key).append(", ");
+        }
+        log.info("Input HashTable Content: {}",sBuffer.toString());
+
     }
 
 }
