@@ -36,6 +36,8 @@ public class DijkstraTest extends TestCase{
         //Given
         //
         List<DNode<Integer>> inputGraph = FileUtils.readFileAsDNodeList("dijkstra/dijkstraData.txt");
+        //List<DNode<Integer>> inputGraph = FileUtils.readFileAsDNodeList("dijkstra/mediumCase.txt");
+
 
         Dijkstra<Integer> dijkstra = new Dijkstra<Integer>();
 
