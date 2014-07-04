@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 
 
@@ -110,7 +111,30 @@ public class utilsTest
         log.info("Input Array Content: {}",sBuffer.toString());
 
         //Then
-        Assert.assertEquals(8, inputGraph.size());
+        Assert.assertEquals(200, inputGraph.size());
+        
+    }
+
+    @Test
+    public void readHashTableCase1Test() throws IOException {
+        log.info("=================================================");
+        log.info("...Read Integer hashtable from file");
+        log.info("=================================================");
+
+        //Given
+        Hashtable<Long, Integer> inputTable = FileUtils.readFileAsHashTable("hashing/integers.txt", 11);
+
+
+        //Then
+        int tableSize = inputTable.keySet().size();
+
+        Assert.assertEquals(9, tableSize);
+
+        StringBuffer sBuffer= new StringBuffer();
+        for(Long key: inputTable.keySet()){
+            sBuffer.append(key).append(", ");
+        }
+        log.info("Input HashTable Content: {}",sBuffer.toString());
     }
 
 }

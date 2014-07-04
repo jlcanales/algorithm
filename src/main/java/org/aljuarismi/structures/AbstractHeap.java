@@ -178,6 +178,13 @@ public abstract class AbstractHeap<E extends Comparable<? super E>> implements C
         return topElement;
     }
 
+    /** Remove and return maximum value */
+    public E peekTop() {
+        assert Heap.size() > 0 : "Removing from empty heap";
+        return Heap.get(0);
+    }
+
+
     /** Remove and return element at specified position */
     public E remove(int pos) {
         assert (pos >= 0) && (pos < Heap.size()) : "Illegal heap position";
