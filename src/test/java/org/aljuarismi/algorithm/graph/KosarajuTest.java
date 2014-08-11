@@ -73,8 +73,8 @@ public class KosarajuTest extends TestCase{
 
         //List<GNode<Integer>> inputGraph = FileUtils.readFileAsGNodeList("dirgraph/SCC.txt", 875714);
 
-        // sccbase3  -> Result 3,3,2,0,0
-        //List<GNode<Integer>> inputGraph = FileUtils.readFileAsGNodeList("dirgraph/sccbase2.txt", 9);
+        // sccbase3  -> Result 3,3,3,0,0
+        List<GNode<Integer>> inputGraph = FileUtils.readFileAsGNodeList("dirgraph/sccbase2.txt", 9);
 
         // sccbase3  -> Result 3,3,2,0,0
         //List<GNode<Integer>> inputGraph = FileUtils.readFileAsGNodeList("dirgraph/sccbase3.txt", 8);
@@ -86,7 +86,7 @@ public class KosarajuTest extends TestCase{
         //List<GNode<Integer>> inputGraph = FileUtils.readFileAsGNodeList("dirgraph/sccbase5.txt", 8);
 
         // sccbase6  -> Result 6,3,2,1,0
-        List<GNode<Integer>> inputGraph = FileUtils.readFileAsGNodeList("dirgraph/sccbase6.txt", 12);
+        //List<GNode<Integer>> inputGraph = FileUtils.readFileAsGNodeList("dirgraph/sccbase6.txt", 12);
 
         //When
         log.info("Stating kosaraju SCC");
@@ -96,16 +96,16 @@ public class KosarajuTest extends TestCase{
         //Then
 
         //Log results
-        Iterator<GNode<Integer>> iter = inputGraph.iterator();
+/*        Iterator<GNode<Integer>> iter = inputGraph.iterator();
         while(iter.hasNext()){
             GNode<Integer> node = iter.next();
 
             //log.info("Node: {}; order: {}", node.getNodeID(), node.getTopologicalSortNumber());
             log.debug("Node: {}; order: {}; Leader:" + node.getLeaderSortNumber().intValue() + ";", node.getPayLoad().toString(), node.getNodeID());
         }
-
+*/
         //Print Sorted Node volumes
-        /*        Map<Integer, Integer> sccMap = DirGraph.getSCCVolumes(inputGraph);
+                Map<Integer, Integer> sccMap = Kosaraju.getSCCVolumes(inputGraph);
 
         StringBuilder sb = new StringBuilder();
         Iterator<Map.Entry<Integer, Integer>> entryIter = sccMap.entrySet().iterator();
@@ -122,7 +122,7 @@ public class KosarajuTest extends TestCase{
             elements++;
         }
         log.info(sb.toString());
-  */
+
 
     }
 

@@ -65,7 +65,7 @@ public class DirGraphAlgTest extends TestCase{
         log.info("=================================================");
 
         //Given
-        List<DirGraphNode<Integer>> inputGraph = FileUtils.readFileAsDirectedGraphNode("dirgraph/sccbase3.txt", 12);
+        List<DirGraphNode<Integer>> inputGraph = FileUtils.readFileAsDirectedGraphNode("dirgraph/sccbase3.txt", 8);
 
         //When
         DirGraph.kosaraju(inputGraph);

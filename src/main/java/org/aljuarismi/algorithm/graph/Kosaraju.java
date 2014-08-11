@@ -1,12 +1,11 @@
 package org.aljuarismi.algorithm.graph;
 
+import org.aljuarismi.algorithm.graph.node.DirGraphNode;
 import org.aljuarismi.algorithm.graph.node.GNode;
 import org.aljuarismi.algorithm.sort.RevQuickSort;
 import org.apache.spark.api.java.function.*;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * Created by javadev on 31/05/14.
@@ -148,7 +147,46 @@ public class Kosaraju<T> extends VoidFunction<List<GNode<T>>> {
     }
 
 
+    public static<T extends Comparable<T>> Map<Integer, Integer> getSCCVolumes(List<GNode<T>> graph){
+        HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+        ValueComparator bvc =  new ValueComparator(map);
+        TreeMap<Integer,Integer> sorted_map = new TreeMap<Integer,Integer>( bvc);
 
+        Iterator<GNode<T>> nodeIter = graph.iterator();
+
+        while( nodeIter.hasNext()){
+            GNode<T> nodeV = nodeIter.next();
+            if(map.get(nodeV.getLeaderSortNumber().intValue())==null){
+                map.put(nodeV.getLeaderSortNumber().intValue(),1);
+            }
+            else{
+                map.put(nodeV.getLeaderSortNumber().intValue(), map.get(nodeV.getLeaderSortNumber().intValue())+1);
+            }
+        }
+
+        //Sort the map
+        sorted_map.putAll(map);
+        //return new HashMap<Integer, Integer>(sorted_map);
+        return sorted_map;
+    }
+
+
+    static class ValueComparator implements Comparator<Integer> {
+
+        Map<Integer, Integer> base;
+
+        ValueComparator(HashMap<Integer, Integer> base) {
+            this.base = base;
+        }
+
+        @Override
+        public int compare(Integer a, Integer b) {
+            if (a.equals(b)) return 0;
+            if (base.get(a) >= base.get(b)) {
+                return -1;
+            } else return 1;
+        }
+    }
 
     // only for testing purposes
     public void setFullyExploredVertex(Integer fullyExploredVertex) {
